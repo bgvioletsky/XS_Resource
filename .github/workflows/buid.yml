@@ -22,9 +22,9 @@ jobs:
         run: |
           wget https://raw.githubusercontent.com/bgvioletsky/DownloadApp/main/version.sh
           chmod +x version.sh
-          # wget https://hub.gitmirror.com/https://github.com/bgvioletsky/DownloadApp/releases/download/v0.0.3/xbs-linux-arm64 -O xbs
-          # chmod +x xbs
-          # xbs x-j -i ALL/mulShare.xbs -o mulShare.json
+          wget https://hub.gitmirror.com/https://github.com/bgvioletsky/DownloadApp/releases/download/v0.0.3/xbs-linux-arm64 -O xbs
+          chmod +x xbs
+          xbs x-j -i ALL/mulShare.xbs -o mulShare.json
       - name: 设置变量
         id: compile
         run: |
@@ -36,7 +36,7 @@ jobs:
         uses: actions/upload-artifact@main
         with:
             name: bgcode.xbs
-            path: ./ALL/mulShare.xbs
+            path: ./ALL/*
  
       - name: 创建链接
         id: ss
