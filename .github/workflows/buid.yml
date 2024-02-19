@@ -24,7 +24,7 @@ jobs:
           chmod +x version.sh
           wget https://github.com/bgvioletsky/DownloadApp/releases/download/v0.0.3/xbs-linux-amd64 -O xbs
           chmod +x xbs
-          ./b.sh ALL/mulShare.json
+          ./b.sh ALL/gj.xbs
           rm -rf xbs version.sh
       - name: 设置变量
         id: compile
