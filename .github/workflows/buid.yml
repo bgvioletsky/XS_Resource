@@ -24,7 +24,7 @@ jobs:
           chmod +x version.sh
           wget https://github.com/bgvioletsky/DownloadApp/releases/download/v0.0.3/xbs-linux-amd64 -O xbs
           chmod +x xbs
-          ./b.sh ALL/gj.xbs
+          ./b.sh ALL/sourceModelList.xbs
           rm -rf xbs version.sh
       - name: 设置变量
         id: compile
@@ -37,7 +37,7 @@ jobs:
             git config --local user.email "44770157@qq.com"
             git config --local user.name "bgcode"
             git pull
-            git add ./version.txt
+            git add version.txt
             git commit -m "update $(date +'%Y-%m-%d %H:%M:%S')"  
       - name:  Push changes
         uses:  ad-m/github-push-action@master
