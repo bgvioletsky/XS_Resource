@@ -2,7 +2,7 @@
 # 从 a.json 文件中读取 JSON 数据
 
 
-xbs xbs2json -i ALL/mulShare.xbs -o ALL/mulShare.json
+xbs xbs2json -i $1 -o ALL/mulShare.json
 cat ./ALL/mulShare.json | jq -c 'to_entries | map(select(.key | test("🔞") | not)) | from_entries' > bgcode.json
 cat ./ALL/mulShare.json | jq -c 'to_entries | map(select(.key | test("🔞"))) | from_entries' > bgcode🔞.json
 
@@ -42,7 +42,7 @@ use(){
                 xbs json2xbs -i text🔞.json -o 18+/StorySources/$val.xbs
             elif [ "$k" = "audio" ]; then
                 cat $1 | jq --arg val "$val" '.[$val]' | jq --arg val "$val" '{ ($val): .}' > audio🔞.json
-                xbs json2xbs -i audio🔞.json -o 18+/ListenSources/$val.json
+                xbs json2xbs -i audio🔞.json -o 18+/ListenSources/$val.xbs
             elif [ "$k" = "comic" ]; then
                 cat $1 | jq --arg val "$val" '.[$val]' | jq --arg val "$val" '{ ($val): .}' > comic🔞.json
                 xbs json2xbs -i comic🔞.json -o 18+/ComicSources/$val.xbs
@@ -55,5 +55,5 @@ use(){
 
 use sa.json
 use ba.json
-rm -f ./sa.json bgcode.json   bgcode🔞.json  ba.json
+rm -f ./sa.json bgcode.json   bgcode🔞.json  ba.json video.json video🔞.json
 rm -f ./ALL/mulShare.json
