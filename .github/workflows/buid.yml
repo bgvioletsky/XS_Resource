@@ -24,25 +24,19 @@ jobs:
           chmod +x version.sh
           wget https://github.com/bgvioletsky/DownloadApp/releases/download/v0.0.3/xbs-linux-amd64 -O xbs
           chmod +x xbs
-          ./xbs x-j -i ALL/mulShare.xbs -o ALL/mulShare.json
+          ./b.sh ALL/mulShare.json
       - name: 设置变量
         id: compile
         run: |
           echo "version=$(bash version.sh)" >> $GITHUB_ENV
           echo "bgcode=$(date +'%Y.%m.%d-%H%M')" >> $GITHUB_ENV
     
-      - name: 上传文件1
-        if: env.UPLOAD_1 == 'true' && !cancelled()
-        uses: actions/upload-artifact@main
-        with:
-            name: bgcode.xbs
-            path: ./ALL/*
       - name: commit
         run: |
             git config --local user.email "44770157@qq.com"
             git config --local user.name "bgcode"
             git pull
-            git add version.txt
+            git add .
             git commit -m "update $(date +'%Y-%m-%d %H:%M:%S')"  
       - name:  Push changes
         uses:  ad-m/github-push-action@master
@@ -64,7 +58,7 @@ jobs:
       - name: 删除老的Releases
         uses: dev-drprasad/delete-older-releases@v0.1.0
         with:
-            keep_latest: 10
+            keep_latest: 3
             delete_tags: true
         env:
             GITHUB_TOKEN: ${{ secrets.MY_GIT_TOKEN }}
