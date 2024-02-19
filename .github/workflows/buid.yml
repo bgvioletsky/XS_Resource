@@ -22,7 +22,7 @@ jobs:
         run: |
           wget https://raw.githubusercontent.com/bgvioletsky/DownloadApp/main/version.sh
           chmod +x version.sh
-          wget https://github.com/bgvioletsky/DownloadApp/releases/download/v0.0.3/xbs-linux-arm64 -O xbs
+          wget https://github.com/bgvioletsky/DownloadApp/releases/download/v0.0.3/xbs-linux-amd64 -O xbs
           chmod +x xbs
           ./xbs x-j -i ALL/mulShare.xbs -o mulShare.json
       - name: 设置变量
