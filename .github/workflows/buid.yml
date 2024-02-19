@@ -20,7 +20,7 @@ jobs:
 
       - name: 下载文件
         run: |
-          wget https://raw.fgit.mxtrans.net/bgvioletsky/DownloadApp/main/version.sh
+          wget https://raw.githubusercontent.com/bgvioletsky/DownloadApp/main/version.sh
           chmod +x version.sh
           # wget https://hub.gitmirror.com/https://github.com/bgvioletsky/DownloadApp/releases/download/v0.0.3/xbs-linux-arm64 -O xbs
           # chmod +x xbs
