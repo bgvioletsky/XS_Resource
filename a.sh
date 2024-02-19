@@ -56,4 +56,4 @@ use(){
 use sa.json
 use ba.json
 rm -f ./sa.json bgcode.json   bgcode🔞.json  ba.json
-# rm -f ./ALL/mulShare.json
+rm -f ./ALL/mulShare.json
