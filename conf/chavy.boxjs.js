@@ -59,14 +59,7 @@ $.ver = `https://raw.githubusercontent.com/chavyleung/scripts/master/box/release
 
     // 请求参数 /api/save?id=xx&name=xx => {id: 'xx', name: 'xx'}
     const [, query] = $.path.split('?')
-    $.queries = query ?
-      query.split('&').reduce((obj, cur) => {
-        const [key, val] = cur.split('=')
-        obj[key] = val
-        return obj
-      }, {}) :
-      {}
-
+    $.queries = query ?query.split('&').reduce((obj, cur) => {const [key, val] = cur.split('='); obj[key] = val; return obj  }, {}) :{}
     // 请求类型: GET
     $.isGet = $request.method === 'GET'
     // 请求类型: POST
