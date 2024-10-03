@@ -1,5 +1,5 @@
 // 创建一个名为'BoxJs'的环境实例
-const $ = new Env('BoxJs')
+const $ = new Env('xs')
 // 为 eval 准备的上下文环境
 const $eval_env = {}
 
@@ -52,6 +52,7 @@ $.ver = `https://raw.githubusercontent.com/chavyleung/scripts/master/box/release
 
   !(async () => {
     // 勿扰模式
+    
     $.isMute = [true, 'true'].includes($.getdata('@chavy_boxjs_userCfgs.isMute'))
 
     // 请求路径
@@ -59,7 +60,11 @@ $.ver = `https://raw.githubusercontent.com/chavyleung/scripts/master/box/release
 
     // 请求参数 /api/save?id=xx&name=xx => {id: 'xx', name: 'xx'}
     const [, query] = $.path.split('?')
-    $.queries = query ?query.split('&').reduce((obj, cur) => {const [key, val] = cur.split('='); obj[key] = val; return obj  }, {}) :{}
+    $.queries = query ? query.split('&').reduce((obj, cur) => {
+      const [key, val] = cur.split('=');
+      obj[key] = val;
+      return obj
+    }, {}) : {}
     // 请求类型: GET
     $.isGet = $request.method === 'GET'
     // 请求类型: POST
@@ -119,10 +124,13 @@ function getHost(url) {
  */
 function getPath(url) {
   // 如果以`/`结尾, 去掉最后一个`/`
+ $.log(url)
   const end = url.lastIndexOf('/') === url.length - 1 ? -1 : undefined
   // slice第二个参数传 undefined 会直接截到最后
   // indexOf第二个参数用来跳过前面的 "https://"
-  return url.slice(url.indexOf('/', 8), end)
+  let x=url.slice(url.indexOf('/', 8), end)
+  $.log(x)
+  return x
 }
 
 /**
@@ -216,7 +224,7 @@ async function handlePage() {
  */
 async function handleQuery() {
   const referer = $request.headers.referer || $request.headers.Referer
-  if (!/^https?:\/\/(.+\.)?boxjs\.(com|net)\//.test(referer)) {
+  if (!/^https?:\/\/(.+\.)?xs\.(com|net)\//.test(referer)) {
     const isMuteQueryAlert = [true, 'true'].includes(
       $.getdata('@chavy_boxjs_userCfgs.isMuteQueryAlert')
     )
@@ -800,7 +808,7 @@ function getAppDatas(app) {
       }
 
       if (setting.type === 'modalSelects') {
-        setting.items = datas ? . [setting.items] || []
+        setting.items = datas ?. [setting.items] || []
       }
     })
   }
@@ -1229,6 +1237,7 @@ function updateCurSesssions(appId, data) {
  * ===================================
  */
 function doneBox() {
+  $.log(`${$.name} 结束!`)
   // 记录当前使用哪个域名访问
   $.setdata(getHost($request.url), $.KEY_boxjs_host)
   if ($.isOptions) doneOptions()
@@ -1773,7 +1782,7 @@ function Env(t, e) {
                     Object.assign(r, {
                       "media-url": t,
                       "media-base64": e,
-                      "media-base64-mime": o ? ? s
+                      "media-base64-mime": o 
                     })
                   }
                   return Object.assign(r, {
@@ -1781,17 +1790,7 @@ function Env(t, e) {
                     sound: t.sound
                   }), r
                 }
-                case "Loon": {
-                  const s = {};
-                  let o = t.openUrl || t.url || t["open-url"] || e;
-                  o && Object.assign(s, {
-                    openUrl: o
-                  });
-                  let r = t.mediaUrl || t["media-url"];
-                  return i ? .startsWith("http") && (r = i), r && Object.assign(s, {
-                    mediaUrl: r
-                  }), console.log(JSON.stringify(s)), s
-                }
+
                 case "Quantumult X": {
                   const o = {};
                   let r = t["open-url"] || t.url || t.openUrl || e;
@@ -1799,7 +1798,7 @@ function Env(t, e) {
                     "open-url": r
                   });
                   let a = t["media-url"] || t.mediaUrl;
-                  i ? .startsWith("http") && (a = i), a && Object.assign(o, {
+               i ? (i.startsWith("http") && (a = i)) : false, a && Object.assign(o, {
                     "media-url": a
                   });
                   let n = t["update-pasteboard"] || t.updatePasteboard || s;
@@ -1846,7 +1845,23 @@ function Env(t, e) {
       this.logLevels[this.logLevel] <= this.logLevels.error && (t.length > 0 && (this.logs = [...this.logs, ...t]), console.log(`${this.logLevelPrefixs.error}${t.map((t=>t??String(t))).join(this.logSeparator)}`))
     }
     log(...t) {
-      t.length > 0 && (this.logs = [...this.logs, ...t]), console.log(t.map((t => t ? ? String(t))).join(this.logSeparator))
+      // 确保 t 是一个数组
+      if (!Array.isArray(t)) {
+        throw new Error('t must be an array');
+      }
+
+      // 如果 t 非空，则追加到 this.logs
+      if (t.length > 0) {
+        this.logs = [...this.logs, ...t];
+      }
+
+      // 处理每个元素，并拼接成字符串
+      const stringifiedLogs = t.map(item => {
+        // 将 item 转换为字符串，如果是 undefined 或 null 则为空字符串
+        return item === undefined || item === null ? '' : String(item);
+      }).join(this.logSeparator);
+
+      console.log(stringifiedLogs);
     }
     logErr(t, e) {
       switch (this.getEnv()) {

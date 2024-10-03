@@ -7,12 +7,23 @@
     <title>香色源仓库</title>
     <link rel="stylesheet" href="/html/css/index.css">
     <link rel="shortcut icon" href="/html/src/" type="image/x-icon">
-    <script src="/html/js/jquery.min.js"></script>
 </head>
 
 <body>
     <div class="header"></div>
-    <div class="content"></div>
+    <div class="content">
+        <form action="http://example.com/submit" method="post" enctype="multipart/form-data">
+            <label for="text-input">文本输入:</label>
+            <input type="text" id="text-input" name="text-input" required>
+            <br><br>
+    
+            <label for="file-upload">文件上传:</label>
+            <input type="file" id="file-upload" name="file-upload" accept=".pdf,.doc,.docx" required>
+            <br><br>
+    
+            <button type="submit">提交</button>
+        </form>
+    </div>
     <div class="footer"></div>
 </body>
 
