@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>香色源仓库</title>
     <link rel="stylesheet" href="/html/css/index.css">
+    <script src="/html/js/index.js"></script>
     <!-- <link rel="shortcut icon" href="/html/src/" type="image/x-icon"> -->
 </head>
 
@@ -16,34 +17,14 @@
     <div class="footer"></div>
 
     <h1>上传 Token</h1>
-    <form id="uploadForm" action="/api/upload-token" method="post">
-        <input type="text" id="tokenInput" name="token" required>
+    <form id="uploadForm" action="/api/set_github" method="post">
+        <input type="text" id="userName" name="userName" value="sss" required>
+        <input type="text" id="repo" name="repo" value="sss" required>
+        <input type="text" id="branch" name="branch" value="sss" required>
+        <input type="text" id="token" name="token" value="sss" required>
         <button type="submit">保存</button>
-
+        <button type="button" id="viewButton">查看</button>
     </form>
 </body>
-<script>
-    document.getElementById('uploadForm').addEventListener('submit', function(event) {
-        event.preventDefault();
 
-        const  jsonData={
-            "key":"upload_token",
-            "val": document.getElementById('tokenInput').value
-        }
-        fetch('/api/upload-token', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(jsonData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Response:', data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    });
-</script>
 </html>
