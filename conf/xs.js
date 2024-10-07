@@ -84,7 +84,7 @@ async function handleTool() {
         url: url,
         method: 'GET', // Optional, default GET.
     }
-    if (/\.png|\.jpg|\.jpeg|\.gif|\.bmp|\.webp$/.test(bg.path)) {
+    if (/\.png|\.jpg|\.jpeg|\.gif|\.bmp|\.ttf|\.woff|\.svg|\.webp$/.test(bg.path)) {
         await $task.fetch(myRequest).then(
             (response) => {
                 $done({bodyBytes: response.bodyBytes});

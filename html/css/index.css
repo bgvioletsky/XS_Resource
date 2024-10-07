@@ -1,27 +1,109 @@
-:root{
-    --bg-color:#1e1e1e;
-    
+:root {
+    --bg-color: #1e1e1e;
+
 }
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    list-style-type: none;
+}
+
 a {
     text-decoration: none;
     color: #000;
+
 }
+
 a:hover {
     color: red;
 }
-body{
+
+body {
     background-color: #84e5ec4c;
     margin: 0;
     padding: 0;
     width: 100%;
 }
-.form_box{
+
+.form_box {
     display: flex;
     margin: 0 auto;
     width: 80%;
     align-items: center;
     flex-direction: column;
     background-color: aliceblue;
+}
+
+.header {
+    width: 100%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.nav {
+    width: 80%;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* max-width: 1200px; */
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.nav-logo {
+    width: 20%;
+    margin: 0 auto;
+}
+
+.nav-toggle {
+    width: 50%;
+}
+
+.nav-search {
+    width: 20%;
+    display: flex;
+    flex-direction: row;
+}
+
+.nav-search>input {
+    width: 80%;
+    padding: 12px 20px;
+    margin: 15px 0;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border-bottom-left-radius: 30px;
+    border-top-left-radius: 30px;
+}
+
+.nav-search>button {
+    width: 20%;
+    padding: 12px 20px 12px 15px ;
+    margin: 15px 0;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border-bottom-right-radius: 30px;
+    border-top-right-radius: 30px;
+}
+
+.nav-menu {
+    display: flex;
+    width: 100%;
+}
+
+.nav-logo>a {
+    font-size: 1.5rem;
+}
+
+.nav-item {
+    font-size: 1.2rem;
+    margin: 0 15px;
 }
 
 .Seting {
@@ -33,7 +115,6 @@ body{
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.4);
-    padding-top: 10%;
 }
 
 .close {
@@ -50,14 +131,17 @@ body{
     color: red;
     cursor: pointer;
 }
-.box_container{
+
+.box_container {
     border-radius: 20px;
-    margin: 1% 20%;
+    margin: 10% 20%;
     padding: 20px;
-    box-shadow: 4px 5px 5px 6px rgba(0, 0, 0, .05)
+    box-shadow: 4px 5px 5px 6px rgba(0, 0, 0, .05);
+    background-color: #b8999946;
 }
+
 .item>input[type=text],
-input[type=password]{
+input[type=password] {
     width: 100%;
     padding: 12px 20px;
     margin: 15px 0;
@@ -65,7 +149,8 @@ input[type=password]{
     box-sizing: border-box;
     border-radius: 30px;
 }
-.button>button{
+
+.button>button {
 
     background-color: #4CAF50;
     color: white;
@@ -76,25 +161,56 @@ input[type=password]{
     height: 40px;
     width: 150px;
     /* padding: 0px 25px; */
-    
+
 }
+
 .button {
     display: flex;
     justify-content: space-around;
 }
+
 @media screen and (max-width: 500px) {
-    .box_container{
+    .box_container {
         border-radius: 20px;
-        margin: 20% 10%;
+        margin: 100px 10%;
         padding: 20px;
         box-shadow: 4px 5px 5px 6px rgba(0, 0, 0, .05)
     }
+    .close {
+        right: 5%;
+        top: 100px;
+    }
 }
+
 @media screen and (min-width: 500px)and (max-width: 1000px) {
-    .box_container{
+    .box_container {
         border-radius: 20px;
         margin: 15% 20%;
         padding: 20px;
         box-shadow: 4px 5px 5px 6px rgba(0, 0, 0, .05)
     }
+}
+
+
+/* content */
+.content {
+    width: 100%;
+    margin-top: 80px ;
+}
+.book-list{
+    width: 80%;
+    margin: 0px auto;
+    display: grid;
+    gap: 30px;
+    grid-column: 2;
+    grid-template-columns:  1fr 1fr 1fr;
+    overflow: hidden;
+    background-color: aliceblue;
+    border-radius: 15px;
+}
+.book-list>li{
+    background-color: #3be188;
+    margin: 15px;
+    border-radius: 15px;
+
 }
