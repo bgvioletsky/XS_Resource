@@ -1,9 +1,11 @@
 const bg = new Env('xs');
 
-bg.version = '0.0.1';
+bg.version = '0.0.3';
 bg.json = bg.name // `接口`类请求的响应体
 bg.html = bg.name // `页面`类请求的响应体
 bg.url = "http://192.168.1.78:8080/index.html";
+bg.web=`https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@${bg.version}/index.html`
+bg.ver=''
 !(
     async () => {
         // 为请求URL设置路径
@@ -17,7 +19,7 @@ bg.url = "http://192.168.1.78:8080/index.html";
         // 初始化请求类型为 page
         bg.type = 'page'
         // 判断是否为查询请求: /query/xxx
-        bg.isQuery = bg.isGet && /^\/query\/.*?/.test(bg.path)
+        bg.isQuery = bg.isPost && /^\/query\/.*?/.test(bg.path)
         // 判断是否为接口请求: /api/xxx
         bg.isApi = bg.isPost && /^\/api\/.*?/.test(bg.path)
         bg.isTool = bg.isGet && /^\/html\/.*?/.test(bg.path)
@@ -54,7 +56,19 @@ bg.url = "http://192.168.1.78:8080/index.html";
 .catch((e) => bg.log(e))
     // 执行完毕操作
     .finally(() => doneBox())
+async function handleQuery(){
+    const [, api] = bg.path.split('/query')
+    const apiHandlers = {
+        '/host': queryHost,      
+    }
 
+    for (const [key, handler] of Object.entries(apiHandlers)) {
+        if (api === key || api.startsWith(`${key}?`)) {
+            await handler()
+            break
+        }
+    }
+}
 
 async function handlePage() {
     await bg.http.get(bg.url).then(
@@ -64,9 +78,7 @@ async function handlePage() {
     )
 }
 async function handleTool() {
-    let url = `${bg.getHost(bg.url)+bg.path}`
-    // bg.log(`${bg.name} ${url}`)
-    // if (/\.png|\.jpg|\.jpeg|\.gif|\.bmp|\.webp$/.test(bg.path)) {
+    let url = `${bg.getHost(bg.url)}${bg.path}`
     const myRequest = {
         url: url,
         method: 'GET', // Optional, default GET.
@@ -75,23 +87,29 @@ async function handleTool() {
         (resp) => {
             bg.html = resp.body
             bg.x = resp.headers
-        }
-    )
-    // } else {
-    //     await bg.http.get(url).then(
-    //         (resp) => {
-    //             bg.html = resp.body
-    //         }
-    //     )
-    // }
-
+        })
 }
-
+async function queryHost() {
+    const data = bg.toObj($request.body)
+    const url = data.url
+    const method=data.method
+    const myRequest = {
+        url: url,
+        method: method, // Optional, default GET.
+    }
+    await $task.fetch(myRequest).then(
+        (resp) => {
+            bg.json = {
+                val: resp.body
+              }
+        })
+}
 async function handleApi() {
     const [, api] = bg.path.split('/api')
     const apiHandlers = {
         '/set_github': apiSave,
         '/get_github': apiGet,
+        
     }
 
     for (const [key, handler] of Object.entries(apiHandlers)) {
@@ -130,14 +148,11 @@ function doneBox() {
 function doneTool() {
     const headers = getToolDoneHeaders()
     if (bg.isQuanX()) {
-
-        bg.done({
-            status: 'HTTP/1.1 200',
-            headers:headers,
-            body: bg.html
-        })
-
-
+            bg.done({
+                status: 'HTTP/1.1 200',
+                headers:headers,
+                body: bg.html
+            })
     } else {
         bg.done({
             response: {
@@ -162,32 +177,7 @@ function doneOptions() {
 }
 
 function getToolDoneHeaders() {
-    if (/\.(css)$/.test(bg.path)) {
-        return getBaseDoneHeaders({
-            'Content-Type': 'text/css;charset=UTF-8'
-        })
-    } else if (/\.(js)$/.test(bg.path)) {
-        return getBaseDoneHeaders({
-            'Content-Type': 'application/javascript;charset=UTF-8'
-        })
-    } else {
-        let contentType;
-        if (/\.(png)$/.test(bg.path)) {
-            contentType = 'image/png';
-        } else if (/\.(jpg|jpeg)$/.test(bg.path)) {
-            contentType = 'image/jpeg';
-        } else if (/\.(gif)$/.test(bg.path)) {
-            contentType = 'image/gif';
-        } else if (/\.(bmp)$/.test(bg.path)) {
-            contentType = 'image/bmp';
-        } else if (/\.(webp)$/.test(bg.path)) {
-            contentType = 'image/webp';
-        } else {
-            contentType = 'application/octet-stream';
-        }
         return getBaseDoneHeaders(bg.x);
-    }
-
 }
 
 

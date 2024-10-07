@@ -12,21 +12,39 @@
 
 <body>
     <div class="header"></div>
-    <div class="content"></div>
+    <div class="content"><button type="button" id="sss">查看</button></div>
     <div class="footer"></div>
 
-    <h1>上传 Token</h1>
-    <form id="uploadForm" action="/api/set_github" method="post">
-        <input type="text" id="userName" name="userName" value="用户名" required>
-        <input type="text" id="repo" name="repo" value="仓库名" required>
-        <input type="text" id="branch" name="branch" value="分支" required>
-        <input type="text" id="token" name="token" value="token" required>
-        <button type="submit">保存</button>
-        <button type="button" id="viewButton">查看</button>
-    </form>
+    <div id="Seting" class="Seting">
+        <h1>github 配置</h1>
+        <div id="form_box" class="form_box">
+            <form id="uploadForm" action="/api/set_github" method="post">
+                <div class="item">
+                    <label><b>用户名</b></label>
+                    <input type="text" id="userName" name="userName" placeholder="用户名" required>
+                </div>
+                <div class="item">
+                    <label><b>仓库名</b></label>
+                    <input type="text" id="repo" name="repo" placeholder="仓库名" required>
+                </div>
+                <div class="item">
+                    <label><b>分支</b></label>
+                    <input type="text" id="branch" name="branch" placeholder="分支" required>
+                </div>
+                <div class="item">
+                    <label><b>token</b></label>
+                    <input type="text" id="token" name="token" placeholder="token" required>
+                </div>
+                <button type="button" id="saveButton">保存</button>
+                <button type="button" id="viewButton">查看</button>
+            </form>
+        </div>
+    </div>
 </body>
 <script>
-    document.getElementById('uploadForm').addEventListener('submit', handleUploadFormSubmit);
+    document.getElementById('saveButton').addEventListener('click', handleUploadFormSubmit);
     document.getElementById('viewButton').addEventListener('click', handleViewButtonClick);
+    document.getElementById('sss').addEventListener('click', handlessButtonClick);
 </script>
+
 </html>

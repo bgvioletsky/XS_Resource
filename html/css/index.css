@@ -3,5 +3,21 @@
     
 }
 body{
-    background-color: red;
+    background-color: #84e5ec4c;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.form_box{
+    display: flex;
+    margin: 0 auto;
+    width: 80%;
+    align-items: center;
+    flex-direction: column;
+    background-color: aliceblue;
+}
+.item{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
