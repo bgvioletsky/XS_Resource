@@ -7,24 +7,26 @@
     <title>香色源仓库</title>
     <link rel="stylesheet" href="/html/css/index.css">
     <script src="/html/js/index.js"></script>
-    <!-- <link rel="shortcut icon" href="/html/src/" type="image/x-icon"> -->
+    <link rel="shortcut icon" href="/html/src/render.png" type="image/x-icon">
 </head>
 
 <body>
     <div class="header"></div>
-    <div class="content">
-    </div>
+    <div class="content"></div>
     <div class="footer"></div>
 
     <h1>上传 Token</h1>
     <form id="uploadForm" action="/api/set_github" method="post">
-        <input type="text" id="userName" name="userName" value="sss" required>
-        <input type="text" id="repo" name="repo" value="sss" required>
-        <input type="text" id="branch" name="branch" value="sss" required>
-        <input type="text" id="token" name="token" value="sss" required>
+        <input type="text" id="userName" name="userName" value="用户名" required>
+        <input type="text" id="repo" name="repo" value="仓库名" required>
+        <input type="text" id="branch" name="branch" value="分支" required>
+        <input type="text" id="token" name="token" value="token" required>
         <button type="submit">保存</button>
         <button type="button" id="viewButton">查看</button>
     </form>
 </body>
-
+<script>
+    document.getElementById('uploadForm').addEventListener('submit', handleUploadFormSubmit);
+    document.getElementById('viewButton').addEventListener('click', handleViewButtonClick);
+</script>
 </html>

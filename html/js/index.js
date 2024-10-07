@@ -1,4 +1,4 @@
-document.getElementById('uploadForm').addEventListener('submit', function (event) {
+function handleUploadFormSubmit(event) {
     event.preventDefault();
 
     const userName = document.getElementById('userName').value;
@@ -35,9 +35,9 @@ document.getElementById('uploadForm').addEventListener('submit', function (event
         .catch(error => {
             console.error('Error:', error);
         });
-});
+}
 
-document.getElementById('viewButton').addEventListener('click', function (event) {
+function handleViewButtonClick(event) {
     event.preventDefault();
 
     const jsonData = {
@@ -63,4 +63,4 @@ document.getElementById('viewButton').addEventListener('click', function (event)
         .catch(error => {
             console.error('Error:', error);
         });
-});
+}

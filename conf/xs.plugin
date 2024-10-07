@@ -1,0 +1,15 @@
+#!name=BoxJs
+#!desc=Data manager
+#!openUrl=http://xs.com
+#!author=chavyleung
+#!homepage=https://chavyleung.gitbook.io/boxjs/
+#!icon=https://raw.githubusercontent.com/chavyleung/scripts/master/box/icons/BoxJs.png
+
+[Rule]
+DOMAIN-SUFFIX,jsdelivr.net,PROXY
+
+[Script]
+http-request ^https?:\/\/(.+\.)?xs\.(com|net) script-path=http://192.168.1.78:8080/conf/xs.js, requires-body=true, timeout=120, tag=xs
+
+[MITM]
+hostname = xs.com, xs.net, *.xs.com, *.xs.net

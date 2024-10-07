@@ -3,8 +3,7 @@ const bg = new Env('xs');
 bg.version = '0.0.1';
 bg.json = bg.name // `接口`类请求的响应体
 bg.html = bg.name // `页面`类请求的响应体
-
-bg.url = "http://192.168.1.7:8080/index.html";
+bg.url = "http://192.168.1.78:8080/index.html";
 !(
     async () => {
         // 为请求URL设置路径
@@ -21,9 +20,9 @@ bg.url = "http://192.168.1.7:8080/index.html";
         bg.isQuery = bg.isGet && /^\/query\/.*?/.test(bg.path)
         // 判断是否为接口请求: /api/xxx
         bg.isApi = bg.isPost && /^\/api\/.*?/.test(bg.path)
-
+        bg.isTool = bg.isGet && /^\/html\/.*?/.test(bg.path)
         // 判断是否为页面请求: /xxx
-        bg.isPage = bg.isGet && !bg.isQuery && !bg.isApi
+        bg.isPage = bg.isGet && !bg.isQuery && !bg.isApi && !bg.isTool
         // 处理OPTIONS请求
         if (bg.isOptions) {
             bg.type = 'options'
@@ -33,6 +32,11 @@ bg.url = "http://192.168.1.7:8080/index.html";
         else if (bg.isPage) {
             bg.type = 'page'
             await handlePage()
+        }
+        // 处理配置请求
+        else if (bg.isTool) {
+            bg.type = 'tool'
+            await handleTool()
         }
         // 处理查询请求
         else if (bg.isQuery) {
@@ -46,30 +50,41 @@ bg.url = "http://192.168.1.7:8080/index.html";
         }
     }
 )()
-    // 捕获错误
-    .catch((e) => bg.log(e))
+// 捕获错误
+.catch((e) => bg.log(e))
     // 执行完毕操作
     .finally(() => doneBox())
 
 
 async function handlePage() {
-    
-    if(/^\/html\/.*?/.test(bg.path)){
-        let a=`${bg.getHost(bg.url)+bg.path}`
-        bg.log(a)
-        await bg.http.get(a).then(
-            (resp) => {
-                bg.html = resp.body
-            }
-        )
-    }else{
-        await bg.http.get(bg.url).then(
-            (resp) => {
-                bg.html = resp.body
-            }
-        )
+    await bg.http.get(bg.url).then(
+        (resp) => {
+            bg.html = resp.body
+        }
+    )
+}
+async function handleTool() {
+    let url = `${bg.getHost(bg.url)+bg.path}`
+    // bg.log(`${bg.name} ${url}`)
+    // if (/\.png|\.jpg|\.jpeg|\.gif|\.bmp|\.webp$/.test(bg.path)) {
+    const myRequest = {
+        url: url,
+        method: 'GET', // Optional, default GET.
     }
-   
+    await $task.fetch(myRequest).then(
+        (resp) => {
+            bg.html = resp.body
+            bg.x = resp.headers
+        }
+    )
+    // } else {
+    //     await bg.http.get(url).then(
+    //         (resp) => {
+    //             bg.html = resp.body
+    //         }
+    //     )
+    // }
+
 }
 
 async function handleApi() {
@@ -89,13 +104,17 @@ async function handleApi() {
 async function apiSave() {
     const data = bg.toObj($request.body)
     let a = bg.setjson(data.val, data.key)
-    bg.json = { 'a': a }
+    bg.json = {
+        'a': a
+    }
 }
 async function apiGet() {
     const data = bg.toObj($request.body)
     const key = data.key
     const val = bg.getjson(key)
-    bg.json = { 'a':val }
+    bg.json = {
+        'a': val
+    }
 }
 
 function doneBox() {
@@ -104,7 +123,30 @@ function doneBox() {
     else if (bg.isPage) donePage()
     else if (bg.isQuery) doneQuery()
     else if (bg.isApi) doneApi()
+    else if (bg.isTool) doneTool()
     else bg.done()
+}
+
+function doneTool() {
+    const headers = getToolDoneHeaders()
+    if (bg.isQuanX()) {
+
+        bg.done({
+            status: 'HTTP/1.1 200',
+            headers:headers,
+            body: bg.html
+        })
+
+
+    } else {
+        bg.done({
+            response: {
+                status: 200,
+                headers: bg.x,
+                body: bg.html
+            }
+        })
+    }
 }
 
 function doneOptions() {
@@ -119,12 +161,42 @@ function doneOptions() {
     })
 }
 
+function getToolDoneHeaders() {
+    if (/\.(css)$/.test(bg.path)) {
+        return getBaseDoneHeaders({
+            'Content-Type': 'text/css;charset=UTF-8'
+        })
+    } else if (/\.(js)$/.test(bg.path)) {
+        return getBaseDoneHeaders({
+            'Content-Type': 'application/javascript;charset=UTF-8'
+        })
+    } else {
+        let contentType;
+        if (/\.(png)$/.test(bg.path)) {
+            contentType = 'image/png';
+        } else if (/\.(jpg|jpeg)$/.test(bg.path)) {
+            contentType = 'image/jpeg';
+        } else if (/\.(gif)$/.test(bg.path)) {
+            contentType = 'image/gif';
+        } else if (/\.(bmp)$/.test(bg.path)) {
+            contentType = 'image/bmp';
+        } else if (/\.(webp)$/.test(bg.path)) {
+            contentType = 'image/webp';
+        } else {
+            contentType = 'application/octet-stream';
+        }
+        return getBaseDoneHeaders(bg.x);
+    }
+
+}
+
+
 function getBaseDoneHeaders(mixHeaders = {}) {
     return Object.assign({
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST,GET,OPTIONS,PUT,DELETE',
-        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
-    },
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST,GET,OPTIONS,PUT,DELETE',
+            'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
+        },
         mixHeaders
     )
 }
@@ -173,6 +245,7 @@ function doneQuery() {
         }
     })
 }
+
 function getVersions() {
     return bg.http.get(bg.ver).then(
         (resp) => {
@@ -240,7 +313,9 @@ function Env(name, opts) {
             const call = new Promise((resolve, reject) => {
                 sender.call(this, opts, (err, resp, body) => {
                     if (err) reject(err)
-                    else resolve(resp)
+                    else resolve(
+                        resp
+                    )
                 })
             })
 
@@ -255,7 +330,7 @@ function Env(name, opts) {
             return this.send.call(this.env, opts, 'POST')
         }
     }
-    return new (class {
+    return new(class {
         constructor(name, opts) {
             this.name = name;
             this.logSeparator = '\n'
@@ -356,7 +431,7 @@ function Env(name, opts) {
                 try {
                     // 尝试将获取到的数据解析为JSON对象
                     json = JSON.parse(this.getdata(key))
-                } catch { }
+                } catch {}
                 // 如果解析失败，json将保持为默认值
             }
             // 返回解析后的JSON对象或默认值
@@ -406,8 +481,8 @@ function Env(name, opts) {
                 const objdat = this.getval(objkey)
                 const objval = objkey ?
                     objdat === 'null' ?
-                        null :
-                        objdat || '{}' :
+                    null :
+                    objdat || '{}' :
                     '{}'
                 try {
                     const objedval = JSON.parse(objval)
@@ -442,9 +517,9 @@ function Env(name, opts) {
                 .slice(0, -1)
                 .reduce(
                     (a, c, i) =>
-                        Object(a[c]) === a[c] ?
-                            a[c] :
-                            (a[c] = Math.abs(path[i + 1]) >> 0 === +path[i + 1] ? [] : {}),
+                    Object(a[c]) === a[c] ?
+                    a[c] :
+                    (a[c] = Math.abs(path[i + 1]) >> 0 === +path[i + 1] ? [] : {}),
                     obj
                 )[path[path.length - 1]] = value
             return obj
@@ -498,7 +573,7 @@ function Env(name, opts) {
                     return (this.data && this.data[key]) || null
             }
         }
-        get(request, callback = () => { }) {
+        get(request, callback = () => {}) {
             if (request.headers) {
                 delete request.headers['Content-Type']
                 delete request.headers['Content-Length']
@@ -518,10 +593,10 @@ function Env(name, opts) {
                 if (this.isSurge() || this.isLoon()) request['auto-redirect'] = false // Surge & Loon
                 if (this.isQuanX())
                     request.opts ?
-                        (request['opts']['redirection'] = false) :
-                        (request.opts = {
-                            redirection: false
-                        }) // Quantumult X
+                    (request['opts']['redirection'] = false) :
+                    (request.opts = {
+                        redirection: false
+                    }) // Quantumult X
             }
             switch (this.getEnv()) {
                 case 'Surge':
@@ -562,12 +637,12 @@ function Env(name, opts) {
                             } = resp
                             callback(
                                 null, {
-                                status,
-                                statusCode,
-                                headers,
-                                body,
-                                bodyBytes
-                            },
+                                    status,
+                                    statusCode,
+                                    headers,
+                                    body,
+                                    bodyBytes
+                                },
                                 body,
                                 bodyBytes
                             )
@@ -606,12 +681,12 @@ function Env(name, opts) {
                                 const body = iconv.decode(rawBody, this.encoding)
                                 callback(
                                     null, {
-                                    status,
-                                    statusCode,
-                                    headers,
-                                    rawBody,
-                                    body
-                                },
+                                        status,
+                                        statusCode,
+                                        headers,
+                                        rawBody,
+                                        body
+                                    },
                                     body
                                 )
                             },
@@ -631,7 +706,7 @@ function Env(name, opts) {
             }
         }
 
-        post(request, callback = () => { }) {
+        post(request, callback = () => {}) {
             const method = request.method ?
                 request.method.toLocaleLowerCase() :
                 'post'
@@ -659,10 +734,10 @@ function Env(name, opts) {
                 if (this.isSurge() || this.isLoon()) request['auto-redirect'] = false // Surge & Loon
                 if (this.isQuanX())
                     request.opts ?
-                        (request['opts']['redirection'] = false) :
-                        (request.opts = {
-                            redirection: false
-                        }) // Quantumult X
+                    (request['opts']['redirection'] = false) :
+                    (request.opts = {
+                        redirection: false
+                    }) // Quantumult X
             }
             switch (this.getEnv()) {
                 case 'Surge':
@@ -704,12 +779,12 @@ function Env(name, opts) {
                             } = resp
                             callback(
                                 null, {
-                                status,
-                                statusCode,
-                                headers,
-                                body,
-                                bodyBytes
-                            },
+                                    status,
+                                    statusCode,
+                                    headers,
+                                    body,
+                                    bodyBytes
+                                },
                                 body,
                                 bodyBytes
                             )
@@ -734,12 +809,12 @@ function Env(name, opts) {
                             const body = iconv.decode(rawBody, this.encoding)
                             callback(
                                 null, {
-                                status,
-                                statusCode,
-                                headers,
-                                rawBody,
-                                body
-                            },
+                                    status,
+                                    statusCode,
+                                    headers,
+                                    rawBody,
+                                    body
+                                },
                                 body
                             )
                         },
@@ -764,11 +839,11 @@ function Env(name, opts) {
          * y:年 M:月 d:日 q:季 H:时 m:分 s:秒 S:毫秒
          * 其中y可选0-4位占位符、S可选0-1位占位符，其余可选0-2位占位符
          * 根据指定的类型格式化时间
-         * @param {string} type - 时间格式类型，支持年、月、日、时、分、秒等格式化选项
+         * @param {string} fmt - 时间格式类型，支持年、月、日、时、分、秒等格式化选项
          * @param {string|null} t - 可选的时间字符串，默认为当前时间
          * @returns {string} 格式化后的时间字符串
          */
-        time(type, t = null) {
+        time(fmt, t = null) {
             // 获取当前时间或指定时间
             const date = t ? new Date(t) : new Date();
             // 定义时间格式化的对象映射
@@ -783,8 +858,8 @@ function Env(name, opts) {
             };
 
             // 处理年份格式化
-            if (/(y+)/.test(type)) {
-                type = type.replace(
+            if (/(y+)/.test(fmt)) {
+                fmt = fmt.replace(
                     RegExp.$1,
                     (date.getFullYear() + '').substr(4 - RegExp.$1.length)
                 );
@@ -792,18 +867,18 @@ function Env(name, opts) {
 
             // 遍历时间格式化对象，进行时间格式化处理
             for (let k in o) {
-                if (new RegExp('(' + k + ')').test(type)) {
-                    type = type.replace(
+                if (new RegExp('(' + k + ')').test(fmt)) {
+                    fmt = fmt.replace(
                         RegExp.$1,
                         RegExp.$1.length == 1 ?
-                            o[k] :
-                            ('00' + o[k]).substr(('' + o[k]).length)
+                        o[k] :
+                        ('00' + o[k]).substr(('' + o[k]).length)
                     );
                 }
             }
 
             // 返回格式化后的时间字符串
-            return type;
+            return fmt;
         }
         wait(time) {
             return new Promise((resolve) => setTimeout(resolve, time))
