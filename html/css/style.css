@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'bgcode';
-  src:  url('/html/src/fonts/bgcode.eot');
-  src:  url('/html/src/fonts/bgcode.eot') format('embedded-opentype'),
-    url('/html/src/fonts/bgcode.ttf') format('truetype'),
-    url('/html/src/fonts/bgcode.woff') format('woff'),
-    url('/html/src/fonts/bgcode.svg') format('svg');
+  src:  url('https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.5/html/src/fonts/bgcode.eot');
+  src:  url('https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.5/html/src/fonts/bgcode.eot') format('embedded-opentype'),
+    url('https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.5/html/src/fonts/bgcode.ttf') format('truetype'),
+    url('https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.5/html/src/fonts/bgcode.woff') format('woff'),
+    url('https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.5/html/src/fonts/bgcode.svg') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
