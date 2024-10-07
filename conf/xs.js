@@ -1,6 +1,6 @@
 const bg = new Env('xs');
 
-bg.version = '0.0.4';
+bg.version = '0.0.5';
 bg.json = bg.name // `接口`类请求的响应体
 bg.html = bg.name // `页面`类请求的响应体
 bg.web = "http://192.168.1.7:8080/index.html";
@@ -87,7 +87,7 @@ async function handleTool() {
     if (/\.png|\.jpg|\.jpeg|\.gif|\.bmp|\.ttf|\.woff|\.svg|\.webp$/.test(bg.path)) {
         await $task.fetch(myRequest).then(
             (response) => {
-                $done({bodyBytes: response.bodyBytes});
+                bg.html = response.bodyBytes
             }
         )
     } else {
@@ -158,19 +158,30 @@ function doneBox() {
 function doneTool() {
     const headers = getToolDoneHeaders()
     if (bg.isQuanX()) {
-        bg.done({
-            status: 'HTTP/1.1 200',
-            headers: headers,
-            body: bg.html
-        })
-    } else {
-        bg.done({
-            response: {
-                status: 200,
+        if (/\.png|\.jpg|\.jpeg|\.gif|\.bmp|\.ttf|\.woff|\.svg|\.webp$/.test(bg.path)) {
+            bg.done({ bodyBytes: bg.html })
+        } else {
+            bg.done({
+                status: 'HTTP/1.1 200',
                 headers: headers,
                 body: bg.html
-            }
-        })
+            })
+        }
+    } else {
+        if (/\.png|\.jpg|\.jpeg|\.gif|\.bmp|\.ttf|\.woff|\.svg|\.webp$/.test(bg.path)) {
+            bg.done({
+                response: {  status: 200,bodyBytes: bg.html }
+            })
+        } else {
+            bg.done({
+                response: {
+                    status: 200,
+                    headers: headers,
+                    body: bg.html
+                }
+            })
+        }
+
     }
 }
 
@@ -187,7 +198,14 @@ function doneOptions() {
 }
 
 function getToolDoneHeaders() {
-    return getBaseDoneHeaders(bg.x);
+    if (/\.html$/.test(bg.path)) {
+        return getHtmlDoneHeaders({
+            'Content-Type': 'text/html;charset=UTF-8'
+        });
+    } else {
+        return getBaseDoneHeaders(bg.x);
+    }
+
 }
 
 
@@ -218,7 +236,7 @@ function donePage() {
     if (bg.isQuanX()) bg.done({
         status: 'HTTP/1.1 200',
         headers,
-        body: bg.html 
+        body: bg.html
     })
     else bg.done({
         response: {
