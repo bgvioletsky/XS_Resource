@@ -1,10 +1,10 @@
 const bg = new Env('xs');
 
-bg.version = '0.0.3';
+bg.version = '0.0.4';
 bg.json = bg.name // `接口`类请求的响应体
 bg.html = bg.name // `页面`类请求的响应体
-bg.url = "http://192.168.1.7:8080/index.html";
-bg.web = `https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@${bg.version}/index.html`
+bg.web = "http://192.168.1.7:8080/index.html";
+bg.url = `https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@${bg.version}/index.html`
 bg.ver = ''
 !(
     async () => {
@@ -79,7 +79,7 @@ async function handlePage() {
     )
 }
 async function handleTool() {
-    let url = `${bg.getHost(bg.url)}${bg.path}`
+    let url = `https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@${bg.version}${bg.path}`
     const myRequest = {
         url: url,
         method: 'GET', // Optional, default GET.

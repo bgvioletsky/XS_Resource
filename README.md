@@ -4,5 +4,5 @@
 
 >打开QX导入该重写即可
 ```js
-
+https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.4/conf/xs.conf
 ```
