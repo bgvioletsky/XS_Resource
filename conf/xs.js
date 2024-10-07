@@ -148,7 +148,7 @@ function doneTool() {
 
         bg.done({
             status: 'HTTP/1.1 200',
-            headers: headers,
+            headers,
             body: bg.html
         })
     } else {
@@ -156,7 +156,7 @@ function doneTool() {
         bg.done({
             response: {
                 status: 200,
-                headers: headers,
+                headers,
                 body: bg.html
             }
         })
