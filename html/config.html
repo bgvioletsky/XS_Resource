@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>香色源仓库</title>
+    <link rel="stylesheet" href="/html/css/index.css">
+    <script src="/html/js/index.js"></script>
+    <link rel="shortcut icon" href="/html/src/render.png" type="image/x-icon">
+</head>
+
+<body>
+    <div id="Seting" class="Seting">
+        <span class="close" title="Close Modal"><a href="/">×</a></span>
+        <div id="box_container" class="box_container"">
+            <div>
+                <h1>github 配置</h1>
+            </div>
+            <form id=" uploadForm" action="/api/set_github" method="post">
+            <div class="item">
+                <label><b>用户名</b></label>
+                <input type="text" id="userName" name="userName" placeholder="用户名" required>
+            </div>
+            <div class="item">
+                <label><b>仓库名</b></label>
+                <input type="text" id="repo" name="repo" placeholder="仓库名" required>
+            </div>
+            <div class="item">
+                <label><b>分支</b></label>
+                <input type="text" id="branch" name="branch" placeholder="分支" required>
+            </div>
+            <div class="item">
+                <label><b>token</b></label>
+                <input type="password" id="token" name="token" placeholder="token" required>
+            </div>
+            <div class="button">
+                <button type="button" id="saveButton">保存</button>
+                <button type="button" id="viewButton">清空</button>
+            </div>
+
+            </form>
+        </div>
+
+    </div>
+</body>
+<script>
+    document.getElementById('saveButton').addEventListener('click', handleUploadFormSubmit);
+    document.getElementById('viewButton').addEventListener('click', handleViewButtonClick);
+
+</script>
+
+</html>

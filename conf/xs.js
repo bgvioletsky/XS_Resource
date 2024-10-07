@@ -3,9 +3,9 @@ const bg = new Env('xs');
 bg.version = '0.0.3';
 bg.json = bg.name // `接口`类请求的响应体
 bg.html = bg.name // `页面`类请求的响应体
-bg.url = "http://192.168.1.78:8080/index.html";
-bg.web=`https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@${bg.version}/index.html`
-bg.ver=''
+bg.url = "http://192.168.1.7:8080/index.html";
+bg.web = `https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@${bg.version}/index.html`
+bg.ver = ''
 !(
     async () => {
         // 为请求URL设置路径
@@ -22,6 +22,7 @@ bg.ver=''
         bg.isQuery = bg.isPost && /^\/query\/.*?/.test(bg.path)
         // 判断是否为接口请求: /api/xxx
         bg.isApi = bg.isPost && /^\/api\/.*?/.test(bg.path)
+        // 判断是否为工具请求: /html/xxx
         bg.isTool = bg.isGet && /^\/html\/.*?/.test(bg.path)
         // 判断是否为页面请求: /xxx
         bg.isPage = bg.isGet && !bg.isQuery && !bg.isApi && !bg.isTool
@@ -52,14 +53,14 @@ bg.ver=''
         }
     }
 )()
-// 捕获错误
-.catch((e) => bg.log(e))
+    // 捕获错误
+    .catch((e) => bg.log(e))
     // 执行完毕操作
     .finally(() => doneBox())
-async function handleQuery(){
+async function handleQuery() {
     const [, api] = bg.path.split('/query')
     const apiHandlers = {
-        '/host': queryHost,      
+        '/host': queryHost,
     }
 
     for (const [key, handler] of Object.entries(apiHandlers)) {
@@ -83,16 +84,25 @@ async function handleTool() {
         url: url,
         method: 'GET', // Optional, default GET.
     }
-    await $task.fetch(myRequest).then(
-        (resp) => {
-            bg.html = resp.body
-            bg.x = resp.headers
-        })
+    if (/\.png|\.jpg|\.jpeg|\.gif|\.bmp|\.webp$/.test(bg.path)) {
+        await $task.fetch(myRequest).then(
+            (response) => {
+                $done({bodyBytes: response.bodyBytes});
+            }
+        )
+    } else {
+        await $task.fetch(myRequest).then(
+            (resp) => {
+                bg.html = resp.body
+                bg.x = resp.headers
+            })
+    }
+
 }
 async function queryHost() {
     const data = bg.toObj($request.body)
     const url = data.url
-    const method=data.method
+    const method = data.method
     const myRequest = {
         url: url,
         method: method, // Optional, default GET.
@@ -101,7 +111,7 @@ async function queryHost() {
         (resp) => {
             bg.json = {
                 val: resp.body
-              }
+            }
         })
 }
 async function handleApi() {
@@ -109,7 +119,7 @@ async function handleApi() {
     const apiHandlers = {
         '/set_github': apiSave,
         '/get_github': apiGet,
-        
+
     }
 
     for (const [key, handler] of Object.entries(apiHandlers)) {
@@ -148,16 +158,16 @@ function doneBox() {
 function doneTool() {
     const headers = getToolDoneHeaders()
     if (bg.isQuanX()) {
-            bg.done({
-                status: 'HTTP/1.1 200',
-                headers:headers,
-                body: bg.html
-            })
+        bg.done({
+            status: 'HTTP/1.1 200',
+            headers: headers,
+            body: bg.html
+        })
     } else {
         bg.done({
             response: {
                 status: 200,
-                headers: bg.x,
+                headers: headers,
                 body: bg.html
             }
         })
@@ -177,16 +187,16 @@ function doneOptions() {
 }
 
 function getToolDoneHeaders() {
-        return getBaseDoneHeaders(bg.x);
+    return getBaseDoneHeaders(bg.x);
 }
 
 
 function getBaseDoneHeaders(mixHeaders = {}) {
     return Object.assign({
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'POST,GET,OPTIONS,PUT,DELETE',
-            'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
-        },
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST,GET,OPTIONS,PUT,DELETE',
+        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
+    },
         mixHeaders
     )
 }
@@ -208,7 +218,7 @@ function donePage() {
     if (bg.isQuanX()) bg.done({
         status: 'HTTP/1.1 200',
         headers,
-        body: bg.html
+        body: bg.html 
     })
     else bg.done({
         response: {
@@ -320,7 +330,7 @@ function Env(name, opts) {
             return this.send.call(this.env, opts, 'POST')
         }
     }
-    return new(class {
+    return new (class {
         constructor(name, opts) {
             this.name = name;
             this.logSeparator = '\n'
@@ -421,7 +431,7 @@ function Env(name, opts) {
                 try {
                     // 尝试将获取到的数据解析为JSON对象
                     json = JSON.parse(this.getdata(key))
-                } catch {}
+                } catch { }
                 // 如果解析失败，json将保持为默认值
             }
             // 返回解析后的JSON对象或默认值
@@ -471,8 +481,8 @@ function Env(name, opts) {
                 const objdat = this.getval(objkey)
                 const objval = objkey ?
                     objdat === 'null' ?
-                    null :
-                    objdat || '{}' :
+                        null :
+                        objdat || '{}' :
                     '{}'
                 try {
                     const objedval = JSON.parse(objval)
@@ -507,9 +517,9 @@ function Env(name, opts) {
                 .slice(0, -1)
                 .reduce(
                     (a, c, i) =>
-                    Object(a[c]) === a[c] ?
-                    a[c] :
-                    (a[c] = Math.abs(path[i + 1]) >> 0 === +path[i + 1] ? [] : {}),
+                        Object(a[c]) === a[c] ?
+                            a[c] :
+                            (a[c] = Math.abs(path[i + 1]) >> 0 === +path[i + 1] ? [] : {}),
                     obj
                 )[path[path.length - 1]] = value
             return obj
@@ -563,7 +573,7 @@ function Env(name, opts) {
                     return (this.data && this.data[key]) || null
             }
         }
-        get(request, callback = () => {}) {
+        get(request, callback = () => { }) {
             if (request.headers) {
                 delete request.headers['Content-Type']
                 delete request.headers['Content-Length']
@@ -583,10 +593,10 @@ function Env(name, opts) {
                 if (this.isSurge() || this.isLoon()) request['auto-redirect'] = false // Surge & Loon
                 if (this.isQuanX())
                     request.opts ?
-                    (request['opts']['redirection'] = false) :
-                    (request.opts = {
-                        redirection: false
-                    }) // Quantumult X
+                        (request['opts']['redirection'] = false) :
+                        (request.opts = {
+                            redirection: false
+                        }) // Quantumult X
             }
             switch (this.getEnv()) {
                 case 'Surge':
@@ -627,12 +637,12 @@ function Env(name, opts) {
                             } = resp
                             callback(
                                 null, {
-                                    status,
-                                    statusCode,
-                                    headers,
-                                    body,
-                                    bodyBytes
-                                },
+                                status,
+                                statusCode,
+                                headers,
+                                body,
+                                bodyBytes
+                            },
                                 body,
                                 bodyBytes
                             )
@@ -671,12 +681,12 @@ function Env(name, opts) {
                                 const body = iconv.decode(rawBody, this.encoding)
                                 callback(
                                     null, {
-                                        status,
-                                        statusCode,
-                                        headers,
-                                        rawBody,
-                                        body
-                                    },
+                                    status,
+                                    statusCode,
+                                    headers,
+                                    rawBody,
+                                    body
+                                },
                                     body
                                 )
                             },
@@ -696,7 +706,7 @@ function Env(name, opts) {
             }
         }
 
-        post(request, callback = () => {}) {
+        post(request, callback = () => { }) {
             const method = request.method ?
                 request.method.toLocaleLowerCase() :
                 'post'
@@ -724,10 +734,10 @@ function Env(name, opts) {
                 if (this.isSurge() || this.isLoon()) request['auto-redirect'] = false // Surge & Loon
                 if (this.isQuanX())
                     request.opts ?
-                    (request['opts']['redirection'] = false) :
-                    (request.opts = {
-                        redirection: false
-                    }) // Quantumult X
+                        (request['opts']['redirection'] = false) :
+                        (request.opts = {
+                            redirection: false
+                        }) // Quantumult X
             }
             switch (this.getEnv()) {
                 case 'Surge':
@@ -769,12 +779,12 @@ function Env(name, opts) {
                             } = resp
                             callback(
                                 null, {
-                                    status,
-                                    statusCode,
-                                    headers,
-                                    body,
-                                    bodyBytes
-                                },
+                                status,
+                                statusCode,
+                                headers,
+                                body,
+                                bodyBytes
+                            },
                                 body,
                                 bodyBytes
                             )
@@ -799,12 +809,12 @@ function Env(name, opts) {
                             const body = iconv.decode(rawBody, this.encoding)
                             callback(
                                 null, {
-                                    status,
-                                    statusCode,
-                                    headers,
-                                    rawBody,
-                                    body
-                                },
+                                status,
+                                statusCode,
+                                headers,
+                                rawBody,
+                                body
+                            },
                                 body
                             )
                         },
@@ -861,8 +871,8 @@ function Env(name, opts) {
                     fmt = fmt.replace(
                         RegExp.$1,
                         RegExp.$1.length == 1 ?
-                        o[k] :
-                        ('00' + o[k]).substr(('' + o[k]).length)
+                            o[k] :
+                            ('00' + o[k]).substr(('' + o[k]).length)
                     );
                 }
             }
