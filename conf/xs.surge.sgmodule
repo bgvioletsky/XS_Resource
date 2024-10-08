@@ -1,0 +1,15 @@
+#!name=BoxJs
+#!desc=http://xs.com
+#!author=ChavyLeung
+#!homepage=https://docs.xs.app/
+#!icon=https://raw.githubusercontent.com/chavyleung/scripts/master/box/icons/BoxJs.png
+#!category=BoxJs
+
+[General]
+force-http-engine-hosts = %APPEND% xs.com, xs.net, *.xs.com, *.xs.net
+
+[Script]
+Rewrite: BoxJs = type=http-request,pattern=^https?:\/\/(.+\.)?xs\.(com|net),script-path=https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.10/conf/xs.js, requires-body=true, timeout=120
+
+[MITM]
+hostname = %INSERT% xs.com, xs.net, *.xs.com, *.xs.net
