@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>香色源仓库</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.8/html/css/index.css">
+    <script src="https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.8/html/js/index.js"></script>
+    <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.8/html/src/render.png" type="image/x-icon">
+</head>
+
+<body>
+    <div id="Seting" class="Seting">
+        <span class="close" title="Close Modal"><a href="/">×</a></span>
+        <div id="box_container" class="box_container"">
+            <div>
+                <h1>测试配置</h1>
+            </div>
+            <form id=" uploadForm" action="/api/set_github" method="post">
+            <div class="item">
+                <label><b>url</b></label>
+                <input type="text" id="userName" name="userName" placeholder="用户名" required autocomplete="of">
+            </div>
+            <div class="item">
+                <label><b>method</b></label>
+                <input type="text" id="repo" name="repo" placeholder="仓库名" required autocomplete="of">
+            </div>
+            <div class="button">
+                <button type="button" id="saveButton">保存</button>
+            </div>
+
+            </form>
+        </div>
+
+    </div>
+    <div id="main" style="display: none;">
+        <textarea id="myTextarea" placeholder="文本区域" style="height: 600px;height: 200px;"></textarea>
+    </div>
+</body>
+<script>
+    document.getElementById('saveButton').addEventListener('click', get_Date);
+</script>
+
+</html>

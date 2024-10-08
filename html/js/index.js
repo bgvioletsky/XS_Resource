@@ -106,3 +106,31 @@ function get_Github() {
             console.error('Error:', error);
         });
 }
+
+async function get_Data(url ,method){
+    const jsonData = {
+        "url": url,
+        'method': method
+    };
+    fetch('/query/host', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(jsonData)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const textareaElement = document.getElementById('myTextarea');
+            textareaElement.value = responseData.message;
+            console.log('Response:', data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
