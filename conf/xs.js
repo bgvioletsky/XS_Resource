@@ -1,12 +1,12 @@
 const bg = new Env('xs');
 
-bg.version = '0.0.8';
+bg.version = '0.0.9';
 bg.json = bg.name // `接口`类请求的响应体
 bg.html = bg.name // `页面`类请求的响应体
 // bg.url = "http://192.168.1.78:8080/index.html";
 bg.url = `https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@${bg.version}/index.html`
 bg.ver = 'https://raw.githubusercontent.com/bgvioletsky/XS_Resource/refs/heads/main/conf/release.json'
-bg.x=bg.name
+bg.x = bg.name;
 !(
         async () => {
             // 为请求URL设置路径
@@ -85,23 +85,23 @@ async function handleTool() {
         const myRequest = {
             url: url
         };
-        await  $task.fetch(myRequest).then(
+        await $task.fetch(myRequest).then(
             (resp) => {
-                bg.html=resp.bodyBytes
-                
+                bg.html = resp.bodyBytes
+
             }
         )
-    } else if(/\.css|\.js$/.test(bg.path)){
+    } else if (/\.css|\.js$/.test(bg.path)) {
         const myRequest = {
             url: url
         };
-        await  $task.fetch(myRequest).then(
+        await $task.fetch(myRequest).then(
             (resp) => {
                 bg.html = resp.body
-                bg.x= resp.headers['Content-Type']
+                bg.x = resp.headers['Content-Type']
             }
         )
-    } else{
+    } else {
         await bg.http.get(url).then(
             (resp) => {
                 bg.html = resp.body
@@ -111,18 +111,38 @@ async function handleTool() {
 }
 async function queryHost() {
     const data = bg.toObj($request.body)
-    const url = data.url
-    const method = data.method
+    var url = data.url
+    if(bg.x==='xs'){
+        if (!/^https?:\/\//i.test(url)) {
+            // 如果没有，则默认添加 https://
+            url = 'https://' + url;
+        }
+    }
+    if(bg.x='error'){
+        url=url.replace('https://','http://')
+    }
+    
+    var method = data.method||'GET'
+    var headers=data.headers||{
+        'Host':bg.getHost(url),
+        'user-agent': ' Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36'
+    };
     const myRequest = {
         url: url,
         method: method, // Optional, default GET.
-    }
-    await $task.fetch(myRequest).then(
+        headers: headers,
+    };
+    await bg.http.get(myRequest).then(
         (resp) => {
+            bg.log(JSON.stringify(resp.body))
             bg.json = {
                 val: resp.body
             }
-        })
+        }, reason => {
+            bg.x='error'
+            queryHost()
+        }
+    )
 }
 async function handleApi() {
     const [, api] = bg.path.split('/api')
@@ -156,7 +176,6 @@ async function apiGet() {
 }
 
 function doneBox() {
-    // bg.log(`${bg.name} 结束!`)
     if (bg.isOptions) doneOptions()
     else if (bg.isPage) donePage()
     else if (bg.isQuery) doneQuery()
@@ -169,12 +188,10 @@ function doneTool() {
     const headers = getToolDoneHeaders()
     if (bg.isQuanX()) {
         if (/\.png|\.ttf$/.test(bg.path)) {
-            bg.log('4')
             bg.done({
                 bodyBytes: bg.html
             })
         } else {
-            bg.log(JSON.stringify(headers))
             bg.done({
                 status: 'HTTP/1.1 200',
                 headers,
