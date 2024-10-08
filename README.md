@@ -4,5 +4,9 @@
 
 >打开QX导入该重写即可
 ```js
-https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.4/conf/xs.conf
+https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.9/conf/xs.conf
+```
+>loon导入插件
+```
+https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.9/conf/xs.plugin
 ```
