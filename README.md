@@ -28,7 +28,7 @@ quantumult-x:///add-resource?remote-resource=%7B%22rewrite_remote%22%3A%5B%22htt
 如果你使用的是 v2.1.19 (385) 及以上的版本，你可以直接: 复制在浏览器中打开
 
 ```
-loon://import?plugin=https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.11/conf/xs.plugin)
+loon://import?plugin=https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.11/conf/xs.plugin
 ```
 
 手动安装
@@ -46,7 +46,7 @@ https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.11/conf/xs.plugin
 
 如果你使用的是 v2.2.8 (1658) 及以上的版本，你可以直接: 复制在浏览器中打开
 ```
-https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.11/conf/xs.surge.sgmodule
+shadowrocket://install?module=https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.11/conf/xs.surge.sgmodule
 ```
 
 手动安装
