@@ -9,6 +9,7 @@ bg.ver = 'https://raw.githubusercontent.com/bgvioletsky/XS_Resource/refs/heads/m
 bg.x = bg.name;
 !(
         async () => {
+            // await getVersions()
             // 为请求URL设置路径
             bg.path = bg.getPath($request.url)
             // 判断请求方法是否为 GET
@@ -53,6 +54,7 @@ bg.x = bg.name;
                 await handleApi()
             }
         }
+
     )()
     // 捕获错误
     .catch((e) => bg.log(e))
@@ -295,7 +297,14 @@ function getVersions() {
     return bg.http.get(bg.ver).then(
         (resp) => {
             try {
-                bg.json = bg.toObj(resp.body)
+                let x=bg.toObj(resp.body)
+                bg.log(x.version)
+                if(bg.version === x.version){
+                    bg.log('版本一致，无需更新')
+                }else{
+                    bg.log('版本不一致，开始更新')
+                    bg.version = x.version
+                }
             } catch {
                 bg.json = {}
             }

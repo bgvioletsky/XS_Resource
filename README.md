@@ -95,3 +95,7 @@ stash://install-override?url=https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource
 ​覆写地址: 
   https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.11/conf/xs.stash.stoverride
 ```
+
+###### 2、访问
+
+[http://xs.com](http://xs.com)
