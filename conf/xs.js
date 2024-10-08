@@ -1,11 +1,12 @@
 const bg = new Env('xs');
 
-bg.version = '0.0.7';
+bg.version = '0.0.8';
 bg.json = bg.name // `接口`类请求的响应体
 bg.html = bg.name // `页面`类请求的响应体
-bg.web = "http://192.168.1.7:8080/index.html";
+// bg.url = "http://192.168.1.78:8080/index.html";
 bg.url = `https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@${bg.version}/index.html`
-bg.ver = ''
+bg.ver = 'https://raw.githubusercontent.com/bgvioletsky/XS_Resource/refs/heads/main/conf/release.json'
+bg.x=bg.name
 !(
         async () => {
             // 为请求URL设置路径
@@ -79,12 +80,34 @@ async function handlePage() {
 }
 async function handleTool() {
     let url = `https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@${bg.version}${bg.path}`
-    await bg.http.get(url).then(
-        (resp) => {
-            bg.html = resp.body
-        }
-    )
-
+    // let url = `http://192.168.1.78:8080${bg.path}`
+    if (/\.png|\.ttf$/.test(bg.path)) {
+        const myRequest = {
+            url: url
+        };
+        await  $task.fetch(myRequest).then(
+            (resp) => {
+                bg.html=resp.bodyBytes
+                
+            }
+        )
+    } else if(/\.css|\.js$/.test(bg.path)){
+        const myRequest = {
+            url: url
+        };
+        await  $task.fetch(myRequest).then(
+            (resp) => {
+                bg.html = resp.body
+                bg.x= resp.headers['Content-Type']
+            }
+        )
+    } else{
+        await bg.http.get(url).then(
+            (resp) => {
+                bg.html = resp.body
+            }
+        )
+    }
 }
 async function queryHost() {
     const data = bg.toObj($request.body)
@@ -133,7 +156,7 @@ async function apiGet() {
 }
 
 function doneBox() {
-    bg.log(`${bg.name} 结束!`)
+    // bg.log(`${bg.name} 结束!`)
     if (bg.isOptions) doneOptions()
     else if (bg.isPage) donePage()
     else if (bg.isQuery) doneQuery()
@@ -145,14 +168,21 @@ function doneBox() {
 function doneTool() {
     const headers = getToolDoneHeaders()
     if (bg.isQuanX()) {
+        if (/\.png|\.ttf$/.test(bg.path)) {
+            bg.log('4')
+            bg.done({
+                bodyBytes: bg.html
+            })
+        } else {
+            bg.log(JSON.stringify(headers))
+            bg.done({
+                status: 'HTTP/1.1 200',
+                headers,
+                body: bg.html
+            })
+        }
 
-        bg.done({
-            status: 'HTTP/1.1 200',
-            headers,
-            body: bg.html
-        })
     } else {
-
         bg.done({
             response: {
                 status: 200,
@@ -160,8 +190,6 @@ function doneTool() {
                 body: bg.html
             }
         })
-
-
     }
 }
 
@@ -178,9 +206,16 @@ function doneOptions() {
 }
 
 function getToolDoneHeaders() {
-        return getHtmlDoneHeaders({
+    if (/\.js|\.css$/.test(bg.path)) {
+        return getBaseDoneHeaders({
+            'Content-Type': bg.x
+        });
+    } else {
+        return getBaseDoneHeaders({
             'Content-Type': 'text/html;charset=UTF-8'
         });
+    }
+
 }
 
 
