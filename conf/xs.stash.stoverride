@@ -1,0 +1,31 @@
+name: "香色源仓库"
+desc: "http://xs.com"
+openUrl: "http://xs.com"
+author: "bgcode"
+homepage: "https://docs.xs.app/"
+manual: "https://docs.xs.app/"
+icon: "https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.10/html/src/render_radius.png"
+category: "XS"
+
+http:
+  force-http-engine:
+    - "xs.com:80"
+    - "xs.net:80"
+    - "*.xs.com:80"
+    - "*.xs.net:80"
+  mitm:
+    - "xs.com"
+    - "xs.net"
+    - "*.xs.com"
+    - "*.xs.net"
+  script:
+    - match: ^https?:\/\/(.+\.)?xs\.(com|net)
+      name: XS
+      type: request
+      require-body: true
+      timeout: 120
+
+script-providers:
+  XS:
+    url: https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.10/conf/xs.js
+    interval: 86400
