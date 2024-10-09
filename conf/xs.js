@@ -1,6 +1,6 @@
 const bg = new Env('xs');
 
-bg.version = '0.0.10';
+bg.version = '0.0.11';
 bg.json = bg.name // `接口`类请求的响应体
 bg.html = bg.name // `页面`类请求的响应体
 // bg.url = "http://192.168.1.78:8080/index.html";
@@ -152,6 +152,7 @@ async function handleApi() {
     const apiHandlers = {
         '/set_github': apiSave,
         '/get_github': apiGet,
+        '/get_XBS_data':apiGetXBSData,
 
     }
 
@@ -174,10 +175,17 @@ async function apiGet() {
     const key = data.key
     const val = bg.getjson(key)
     bg.json = {
-        'a': val
+        'val': val
     }
 }
-
+async function apiGetXBSData() {
+    const data = bg.toObj($request.body)
+    await bg.http.get(data.url).then(
+        (resp) => {
+            bg.json = resp.body
+        }
+    )
+}
 function doneBox() {
     if (bg.isOptions) doneOptions()
     else if (bg.isPage) donePage()

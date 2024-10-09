@@ -77,7 +77,7 @@ function handleViewButtonClick() {
         });
 }
 
-function get_Github() {
+function get_Github(x) {
     const jsonData = {
         "key": "github"
     };
@@ -96,11 +96,19 @@ function get_Github() {
             return response.json();
         })
         .then(data => {
-            for (const key in data.a) {
-                if (data.a.hasOwnProperty(key)) {
-                    document.getElementById(key).value = data.a[key];
+            if(x=='2'){
+                for (const key in data.val) {
+                    if (data.val.hasOwnProperty(key)) {
+                        document.getElementById(key).value = data.val[key];
+                    }
                 }
-            }
+            }else if (x=='1') {
+                window.userName = data.val['userName']
+                window.repo = data.val['repo']
+                window.branch = data.val['branch']
+                window.token = data.val['token']
+            } 
+            
         })
         .catch(error => {
             console.error('Error:', error);
@@ -199,3 +207,77 @@ function compareVersion(version1, version2) {
     }
     return 0;
 }
+
+function get_XBS_data(x) {
+    let leibie=''
+    if(/^video/.test(x)){
+        leibie='video'
+    }else if(/^text/.test(x)){
+        leibie='text'
+    }else if(/^audio/.test(x)){
+        leibie='audio'
+    }else{
+        leibie='comic'
+    }
+    let url=`https://cdn.jsdelivr.net/gh/${userName}/${repo}@v0.0.1/xbs_source/${x}`
+   
+
+    const jsonData = {
+        "url": url,
+    };
+    fetch('/api/get_XBS_data', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(jsonData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        data=JSON.parse(data)
+        let htmlString=`<li>
+                <div class="book-mid-info">
+                    <div class="book-title">
+                        <span class="book-name">源总数${Object.keys(data).length}</span>
+                    </div>
+                    
+                </div>
+            </li>`
+        for (const key in data) {
+            let name=key;
+            let url=data[key].sourceUrl
+            let download_url=`https://cdn.jsdelivr.net/gh/bgvioletsky/XBS_warehouse@v0.0.1/xbs_source/${leibie}/${encodeURIComponent(key)}.xbs`
+               console.log(key,data[key])
+               htmlString = htmlString+`
+            <li>
+                <div class="book-mid-info">
+                    <div class="book-title">
+                        <span class="book-name">${name}</span>
+                    </div>
+                    <p><strong>源URL:</strong> <span class="source-url">${url}</span></p>
+                    <p class="btn">
+                        <a href="${download_url}">下载</a>
+                    </p>
+                </div>
+            </li>
+        `;   
+        }
+        const bookList = document.getElementById('bookList');
+        const xx=document.getElementById('main')
+        xx.style.display='none'
+        // 插入HTML字符串
+        htmlString=`<ul class="book-list">${htmlString}</ul>`
+        bookList.style.display='block'
+        bookList.innerHTML = '';
+        bookList.insertAdjacentHTML('beforeend', htmlString);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
