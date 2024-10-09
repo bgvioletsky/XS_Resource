@@ -8,62 +8,63 @@ bg.url = `https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@${bg.version}/inde
 bg.ver = 'https://raw.githubusercontent.com/bgvioletsky/XS_Resource/refs/heads/main/conf/release.json'
 bg.x = bg.name;
 !(
-        async () => {
-            // await getVersions()
-            // 为请求URL设置路径
-            bg.path = bg.getPath($request.url)
-            // 判断请求方法是否为 GET
-            bg.isGet = $request.method === 'GET'
-            // 判断请求方法是否为 POST
-            bg.isPost = $request.method === 'POST'
-            // 判断请求方法是否为 OPTIONS
-            bg.isOptions = $request.method === 'OPTIONS'
-            // 初始化请求类型为 page
-            bg.type = 'page'
-            // 判断是否为查询请求: /query/xxx
-            bg.isQuery = bg.isPost && /^\/query\/.*?/.test(bg.path)
-            // 判断是否为接口请求: /api/xxx
-            bg.isApi = bg.isPost && /^\/api\/.*?/.test(bg.path)
-            // 判断是否为工具请求: /html/xxx
-            bg.isTool = bg.isGet && /^\/html\/.*?/.test(bg.path)
-            // 判断是否为页面请求: /xxx
-            bg.isPage = bg.isGet && !bg.isQuery && !bg.isApi && !bg.isTool
-            // 处理OPTIONS请求
-            if (bg.isOptions) {
-                bg.type = 'options'
-                await handleOptions()
-            }
-            // 处理页面请求
-            else if (bg.isPage) {
-                bg.type = 'page'
-                await handlePage()
-            }
-            // 处理配置请求
-            else if (bg.isTool) {
-                bg.type = 'tool'
-                await handleTool()
-            }
-            // 处理查询请求
-            else if (bg.isQuery) {
-                bg.type = 'query'
-                await handleQuery()
-            }
-            // 处理接口请求
-            else if (bg.isApi) {
-                bg.type = 'api'
-                await handleApi()
-            }
+    async () => {
+        // await getVersions()
+        // 为请求URL设置路径
+        bg.path = bg.getPath($request.url)
+        // 判断请求方法是否为 GET
+        bg.isGet = $request.method === 'GET'
+        // 判断请求方法是否为 POST
+        bg.isPost = $request.method === 'POST'
+        // 判断请求方法是否为 OPTIONS
+        bg.isOptions = $request.method === 'OPTIONS'
+        // 初始化请求类型为 page
+        bg.type = 'page'
+        // 判断是否为查询请求: /query/xxx
+        bg.isQuery = bg.isPost && /^\/query\/.*?/.test(bg.path)
+        // 判断是否为接口请求: /api/xxx
+        bg.isApi = bg.isPost && /^\/api\/.*?/.test(bg.path)
+        // 判断是否为工具请求: /html/xxx
+        bg.isTool = bg.isGet && /^\/html\/.*?/.test(bg.path)
+        // 判断是否为页面请求: /xxx
+        bg.isPage = bg.isGet && !bg.isQuery && !bg.isApi && !bg.isTool
+        // 处理OPTIONS请求
+        if (bg.isOptions) {
+            bg.type = 'options'
+            await handleOptions()
         }
+        // 处理页面请求
+        else if (bg.isPage) {
+            bg.type = 'page'
+            await handlePage()
+        }
+        // 处理配置请求
+        else if (bg.isTool) {
+            bg.type = 'tool'
+            await handleTool()
+        }
+        // 处理查询请求
+        else if (bg.isQuery) {
+            bg.type = 'query'
+            await handleQuery()
+        }
+        // 处理接口请求
+        else if (bg.isApi) {
+            bg.type = 'api'
+            await handleApi()
+        }
+    }
 
-    )()
-    // 捕获错误
-    .catch((e) => bg.log(e))
+)()
+// 捕获错误
+.catch((e) => bg.log(e))
     // 执行完毕操作
     .finally(() => doneBox())
 async function handleQuery() {
     const [, api] = bg.path.split('/query')
     const apiHandlers = {
         '/host': queryHost,
+        '/version': getVersions
     }
     for (const [key, handler] of Object.entries(apiHandlers)) {
         if (api === key || api.startsWith(`${key}?`)) {
@@ -114,19 +115,19 @@ async function handleTool() {
 async function queryHost() {
     const data = bg.toObj($request.body)
     var url = data.url
-    if(bg.x==='xs'){
+    if (bg.x === 'xs') {
         if (!/^https?:\/\//i.test(url)) {
             // 如果没有，则默认添加 https://
             url = 'https://' + url;
         }
     }
-    if(bg.x='error'){
-        url=url.replace('https://','http://')
+    if (bg.x = 'error') {
+        url = url.replace('https://', 'http://')
     }
-    
-    var method = data.method||'GET'
-    var headers=data.headers||{
-        'Host':bg.getHost(url),
+
+    var method = data.method || 'GET'
+    var headers = data.headers || {
+        'Host': bg.getHost(url),
         'user-agent': ' Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36'
     };
     const myRequest = {
@@ -141,7 +142,7 @@ async function queryHost() {
                 val: resp.body
             }
         }, reason => {
-            bg.x='error'
+            bg.x = 'error'
             queryHost()
         }
     )
@@ -297,13 +298,10 @@ function getVersions() {
     return bg.http.get(bg.ver).then(
         (resp) => {
             try {
-                let x=bg.toObj(resp.body)
-                bg.log(x.version)
-                if(bg.version === x.version){
-                    bg.log('版本一致，无需更新')
-                }else{
-                    bg.log('版本不一致，开始更新')
-                    bg.version = x.version
+                let x = bg.toObj(resp.body)
+                bg.json = {
+                    nowversion: bg.version,
+                    newversion: x.version
                 }
             } catch {
                 bg.json = {}
@@ -444,7 +442,24 @@ function Env(name, opts) {
                 return defaultValue
             }
         }
-
+        /**
+         * 比较两个版本号的大小
+         * @param {string} version1 - 第一个版本号，格式为"数字.数字.数字"
+         * @param {string} version2 - 第二个版本号，格式为"数字.数字.数字"
+         * @returns {number} - 返回值为1表示version1大于version2，为-1表示version1小于version2，为0表示两个版本号相等
+         */
+        compareVersion(version1, version2) {
+            const v1 = version1.split('.').map(Number);
+            const v2 = version2.split('.').map(Number);
+            for (let i = 0; i < 3; i++) {
+                if (v1[i] > v2[i]) {
+                    return 1; // version1大于version2
+                } else if (v1[i] < v2[i]) {
+                    return -1; // version1小于version2
+                }
+            }
+            return 0;
+        }
         /**
          * 将对象转换为字符串
          * 

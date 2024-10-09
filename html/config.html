@@ -35,8 +35,8 @@
                 <input type="password" id="token" name="token" placeholder="token" required autocomplete="of">
             </div>
             <div class="button">
-                <button type="button" id="saveButton">保存</button>
-                <button type="button" id="viewButton">清空</button>
+                <button type="button" id="saveButton" onclick="handleUploadFormSubmit()">保存</button>
+                <button type="button" id="viewButton" onclick="handleViewButtonClick()">清空</button>
             </div>
 
             </form>
@@ -48,9 +48,6 @@
     window.onload = function () {
         get_Github()
     }
-    document.getElementById('saveButton').addEventListener('click', handleUploadFormSubmit);
-    document.getElementById('viewButton').addEventListener('click', handleViewButtonClick);
-
 </script>
 
 </html>

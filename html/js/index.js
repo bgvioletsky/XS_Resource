@@ -1,8 +1,6 @@
 let method = 'GET'
 
-function handleUploadFormSubmit(event) {
-    event.preventDefault();
-
+function handleUploadFormSubmit() {
     const userName = document.getElementById('userName').value;
     const repo = document.getElementById('repo').value;
     const branch = document.getElementById('branch').value;
@@ -41,8 +39,7 @@ function handleUploadFormSubmit(event) {
         });
 }
 
-function handleViewButtonClick(event) {
-    event.preventDefault();
+function handleViewButtonClick() {
     let a = ['userName', 'repo', 'branch', 'token']
     for (let i in a) {
         document.getElementById(a[i]).value = '';
@@ -113,6 +110,9 @@ function get_Github() {
 async function get_Data() {
     var url = document.getElementById('userName').value || 'https://xs.com';
     var headers = document.getElementById('branch').value
+    if (headers==''){
+        headers='{ "user-agent": " Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36"}'
+    }
     headers=headers.replace(/'/g,'"')
     headers=JSON.parse(headers)
     const jsonData = {
@@ -179,4 +179,23 @@ function handleCheckboxClick(checkbox) {
             console.log(method)
         }
     });
+}
+
+/**
+ * 比较两个版本号的大小
+ * @param {string} version1 - 第一个版本号，格式为"数字.数字.数字"
+ * @param {string} version2 - 第二个版本号，格式为"数字.数字.数字"
+ * @returns {number} - 返回值为1表示version1大于version2，为-1表示version1小于version2，为0表示两个版本号相等
+ */
+function compareVersion(version1, version2) {
+    const v1 = version1.split('.').map(Number);
+    const v2 = version2.split('.').map(Number);
+    for (let i = 0; i < 3; i++) {
+        if (v1[i] > v2[i]) {
+            return 1; // version1大于version2
+        } else if (v1[i] < v2[i]) {
+            return -1; // version1小于version2
+        }
+    }
+    return 0;
 }
