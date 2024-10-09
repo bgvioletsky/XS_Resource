@@ -103,8 +103,8 @@ function get_Github(x) {
                     }
                 }
             }else if (x=='1') {
-                window.userName = data.val['userName']
-                window.repo = data.val['repo']
+                window.userName = data.val['userName']||'bgvioletsky'
+                window.repo = data.val['repo']||'XBS_warehouse'
                 window.branch = data.val['branch']
                 window.token = data.val['token']
             } 
