@@ -268,11 +268,8 @@ function get_XBS_data(x) {
         `;   
         }
         const bookList = document.getElementById('bookList');
-        const xx=document.getElementById('main')
-        xx.style.display='none'
         // 插入HTML字符串
         htmlString=`<ul class="book-list">${htmlString}</ul>`
-        bookList.style.display='block'
         bookList.innerHTML = '';
         bookList.insertAdjacentHTML('beforeend', htmlString);
     })
