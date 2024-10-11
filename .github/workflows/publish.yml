@@ -28,7 +28,7 @@ jobs:
                    echo "version=$(cat version)" >> $GITHUB_ENV
                    rm -rf version.sh
                    mv version .github/config/version
-                   echo "txt=**发布时间：$(date +'%Y-%m-%d %H:%M:%S')**" >>  $GITHUB_ENV
+                   echo "**发布时间：$(date +'%Y-%m-%d %H:%M:%S')**" >>  bg.txt
       - name: Commit and push changes
         run: |
               git config --local user.email 'bglhcode@icloud.com'
@@ -41,7 +41,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ env.version }}
-          body_path: ${{ env.txt }}
+          body_path: bg.txt
       - name: 删除
         shell: bash
         run: |
