@@ -3,13 +3,13 @@
 #!openUrl=http://xs.com
 #!author=bgcode
 #!homepage=https://github.com/bgvioletsky/XS_Resource
-#!icon=https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.16/html/src/render_radius.png
+#!icon=https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.17/html/src/render_radius.png
 
 [Rule]
 DOMAIN-SUFFIX,jsdelivr.net,PROXY
 
 [Script]
-http-request ^https?:\/\/(.+\.)?xs\.(com|net|xyz) script-path=https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.16/conf/xs.js, requires-body=true, timeout=120, tag=xs
+http-request ^https?:\/\/(.+\.)?xs\.(com|net|xyz) script-path=https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.17/conf/xs.js, requires-body=true, timeout=120, tag=xs
 
 [MITM]
 hostname = xs.com, xs.net,xs.xyz ,*.xs.com, *.xs.net, *.xs.xyz

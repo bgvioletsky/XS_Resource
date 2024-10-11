@@ -297,14 +297,16 @@ function get_XBS_data(x) {
 
 
 function  get_version(){
-    fetch('/api/get_version')
+    fetch('/api/get_version',{
+        method: 'POST',
+    })
     .then(response => response.json())
     .then(data => {
-        data=JSON.parse(data)
+        // data=JSON.parse(data)
         let update=data.update
         let version=data.version
         let env=data.env
-        if(update=='-1'){
+        if(update){
             alert('当前版本较低，请更新到最新版')
             if(env=='Stash'){
                 window.location.href = `stash://install-override?url=https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@${version}/conf/xs.stash.stoverride`

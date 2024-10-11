@@ -1,10 +1,10 @@
 const bg = new Env('xs');
 
-bg.version = '0.0.16';
+bg.version = '0.0.17';
 bg.json = bg.name // `接口`类请求的响应体
 bg.html = bg.name // `页面`类请求的响应体
-bg.url = "http://192.168.1.78:8080/index.html";
-// bg.url = `https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@${bg.version}/index.html`
+// bg.url = "http://192.168.1.78:8080/index.html";
+bg.url = `https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@${bg.version}/index.html`
 bg.ver = 'https://raw.githubusercontent.com/bgvioletsky/XS_Resource/refs/heads/main/conf/release.json'
 bg.x = bg.name;
 !(
