@@ -1,6 +1,6 @@
 const bg = new Env('xs');
 
-bg.version = '0.0.12';
+bg.version = '0.0.14';
 bg.json = bg.name // `接口`类请求的响应体
 bg.html = bg.name // `页面`类请求的响应体
 // bg.url = "http://192.168.1.78:8080/index.html";
@@ -137,7 +137,7 @@ async function queryHost() {
     };
     await bg.http.get(myRequest).then(
         (resp) => {
-            bg.log(JSON.stringify(resp.body))
+            // bg.log(JSON.stringify(resp.body))
             bg.json = {
                 val: resp.body
             }

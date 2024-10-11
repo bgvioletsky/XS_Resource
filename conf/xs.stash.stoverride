@@ -4,7 +4,7 @@ openUrl: "http://xs.com"
 author: "bgcode"
 homepage: "https://docs.xs.app/"
 manual: "https://docs.xs.app/"
-icon: "https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.12/html/src/render_radius.png"
+icon: "https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.14/html/src/render_radius.png"
 category: "XS"
 
 http:
@@ -27,5 +27,5 @@ http:
 
 script-providers:
   XS:
-    url: https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.12/conf/xs.js
+    url: https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.14/conf/xs.js
     interval: 86400
