@@ -21,25 +21,27 @@ jobs:
                       echo "Failed to download the file."
                       exit 1
                    fi  
-                   if [ -e "con f/version" ]; then               
+                   if [ -e ".github/config/version" ]; then               
                        mv .github/config/version  version
                    fi
-                   
-                   echo "version=$(bash version.sh)" >> $GITHUB_ENV
-                   echo "**发布时间：$(date +'%Y-%m-%d %H:%M:%S')**" >> bgcode.txt
+                   bash version.sh
+                   echo "version=$(cat version)" >> $GITHUB_ENV
+                   rm -rf version.sh
+                   mv version .github/config/version
+                   echo "txt=**发布时间：$(date +'%Y-%m-%d %H:%M:%S')**" >>  $GITHUB_ENV
       - name: Commit and push changes
         run: |
               git config --local user.email 'bglhcode@icloud.com'
               git config --local user.name 'BGcode'
               git pull
-              git add . 
+              git add .github/* conf/* html/* index.html README.md
               git commit -m "发布版本${{ env.version }} $(date +'%Y-%m-%d %H:%M:%S')"
               git push
       - name: 发布到release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ env.version }}
-          body_path: bgcode.txt
+          body_path: ${{ env.txt }}
       - name: 删除
         shell: bash
         run: |
