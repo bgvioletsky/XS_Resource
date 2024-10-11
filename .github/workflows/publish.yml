@@ -1,14 +1,60 @@
-name: 发布
+name: auto_convert
 
 on:
-  workflow_dispatch:
-env:
-  TZ: Asia/Shanghai
+    workflow_dispatch:
+    # 增加定时任务触发
+    # schedule:
+    #   - cron: '0 0 * * *'  # 每天凌晨执行一次
+    
 jobs:
   build:
-    name: 下载
+    name: 发布脚本
     runs-on: ubuntu-latest
     steps:
-        - name: Checkout code
-          uses: actions/checkout@v3
-  
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+    
+      - name: 创建版本号
+        run: |
+                   if ! curl -L --silent --output version.sh 'https://raw.githubusercontent.com/bgvioletsky/command/refs/heads/main/version.sh'; then
+                      echo "Failed to download the file."
+                      exit 1
+                   fi  
+                   if [ -e "con f/version" ]; then               
+                       mv .github/config/version  version
+                   fi
+                   
+                   echo "version=$(bash version.sh)" >> $GITHUB_ENV
+                   echo "**发布时间：$(date +'%Y-%m-%d %H:%M:%S')**" >> bgcode.txt
+      - name: Commit and push changes
+        run: |
+              git config --local user.email 'bglhcode@icloud.com'
+              git config --local user.name 'BGcode'
+              git pull
+              git add . 
+              git commit -m "发布版本${{ env.version }} $(date +'%Y-%m-%d %H:%M:%S')"
+              git push
+      - name: 发布到release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.version }}
+          body_path: bgcode.txt
+      - name: 删除
+        shell: bash
+        run: |
+              current_run_id=$(echo "$GITHUB_RUN_ID")
+              runs=$(curl -s -X GET "https://api.github.com/repos/${{ github.repository }}/actions/workflows/publish.yml/runs" \
+                -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+                -H "Accept: application/vnd.github.v3+json" | jq -r '.workflow_runs[].id')
+              echo "$runs"
+                  keep_runs=$(echo "$runs" | head -n 5)
+                  for run_id in $runs; do
+                    if [ "$run_id" != "$current_run_id" ] && [[ ! "$keep_runs" =~ "$run_id" ]]; then
+                      curl -s -X DELETE "https://api.github.com/repos/${{ github.repository }}/actions/runs/$run_id" \
+                        -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+                        -H "Accept: application/vnd.github.v3+json" > /dev/null
+                    fi
+                  done
+      
+          
