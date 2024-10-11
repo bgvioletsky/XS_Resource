@@ -222,16 +222,11 @@ function get_XBS_data(x) {
     let url=`https://cdn.jsdelivr.net/gh/${userName}/${repo}@v0.0.1/xbs_source/${x}`
    
 
-    const jsonData = {
-        "url": url,
-    };
-    fetch('/api/get_XBS_data', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(jsonData)
-    })
+    // const jsonData = {
+    //     "url": url,
+    // };
+    // 
+    fetch(url)
     .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -239,7 +234,7 @@ function get_XBS_data(x) {
         return response.json();
     })
     .then(data => {
-        data=JSON.parse(data)
+        // data=JSON.parse(data)
         let htmlString=`<li>
                 <div class="book-mid-info">
                     <div class="book-title">
