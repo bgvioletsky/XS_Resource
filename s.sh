@@ -6,8 +6,8 @@
  # @Description: 描述#!/bin/bash
 
 # 定义要替换的旧版本号和新版本号
-OLD_VERSION="0.0.17"
-NEW_VERSION="0.0.18"
+OLD_VERSION="0.0.18"
+NEW_VERSION="0.0.19"
 
 # 遍历仓库下的所有文件
 find . -type f -name '*.js' -o -name '*.html' -o -name 'xs.*' -o -name '*.json'| while read file; do
