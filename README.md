@@ -99,3 +99,17 @@ stash://install-override?url=https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource
 ###### 2、访问
 
 [http://xs.com](http://xs.com)
+
+
+
+### 感谢
+
+在此特别感谢以下贡献者和开源项目，他们的努力使本项目成为可能：
+
+- [chavyleung](https://github.com/chavyleung) - 原始代码作者
+
+同时，感谢所有使用和支持本项目的人们！你们的反馈和建议对我们非常重要。
+
+### 开源许可证
+
+本项目采用 [GPL 许可证](https://www.gnu.org/licenses/gpl-3.0.html)，欢迎任何人使用、修改和分发。
