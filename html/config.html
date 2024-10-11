@@ -1,11 +1,13 @@
 <!--
- * @Author: bgcode violetcode@icloud.com
+ * @Author: bgcode
  * @Date: 2024-10-07 23:30:57
- * @LastEditors: bgcode violetcode@icloud.com
- * @LastEditTime: 2024-10-11 23:23:07
+ * @LastEditTime: 2024-10-12 00:51:34
+ * @LastEditors: bgcode
+ * @Description: 描述
  * @FilePath: /XS_Resource/html/config.html
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * 本项目采用GPL 许可证，欢迎任何人使用、修改和分发。
 -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,9 +15,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>香色源仓库</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.15/html/css/index.css">
-    <script src="https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.15/html/js/index.js"></script>
-    <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.15/html/src/render.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.16/html/css/index.css">
+    <script src="https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.16/html/js/index.js"></script>
+    <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.0.16/html/src/render.png" type="image/x-icon">
 </head>
 
 <body>
@@ -28,11 +30,11 @@
             <form id=" uploadForm" action="/api/set_github" method="post">
             <div class="item">
                 <label><b>用户名</b></label>
-                <input type="text" id="userName" name="userName" value="bgvioletsky"placeholder="用户名" required autocomplete="of">
+                <input type="text" id="userName" name="userName" placeholder="用户名" required autocomplete="of">
             </div>
             <div class="item">
                 <label><b>仓库名</b></label>
-                <input type="text" id="repo" name="repo"value="XBS_warehouse" placeholder="仓库名" required autocomplete="of">
+                <input type="text" id="repo" name="repo"  placeholder="仓库名" required autocomplete="of">
             </div>
             <div class="item">
                 <label><b>分支</b></label>
@@ -46,7 +48,8 @@
                 <button type="button" id="saveButton" class="bg_mv" onclick="handleUploadFormSubmit()">保存</button>
                 <button type="button" id="viewButton" class="bg_mv" onclick="handleViewButtonClick()">清空</button>
             </div>
-
+            <div >如果不知如何配置请访问我的<a href="https://github.com/bgvioletsky/XS_Resource" style="background-color: antiquewhite;border-radius: 23px;border: 1px solid rgb(37, 160, 37);padding: 0 12px;">仓库</a></div>
+            </div>
             </form>
         </div>
 

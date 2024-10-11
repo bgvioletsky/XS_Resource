@@ -32,13 +32,16 @@ function handleUploadFormSubmit() {
         .then(data => {
             console.log('Response:', data);
             alert('保存成功');
+            window.location.href = getHost(window.location.href);
         })
         .catch(error => {
             console.error('Error:', error);
             alert('保存失败');
         });
 }
-
+function getHost(url) {
+    return url.slice(0, url.indexOf('/', 8))
+}
 function handleViewButtonClick() {
     let a = ['userName', 'repo', 'branch', 'token']
     for (let i in a) {
@@ -76,7 +79,13 @@ function handleViewButtonClick() {
             alert('删除失败');
         });
 }
-
+function getPath(url) {
+    // 如果以`/`结尾, 去掉最后一个`/`
+    const end = url.lastIndexOf('/') === url.length - 1 ? -1 : undefined
+    // slice第二个参数传 undefined 会直接截到最后
+    // indexOf第二个参数用来跳过前面的 "https://"
+    return url.slice(url.indexOf('/', 8), end)
+}
 function get_Github(x) {
     const jsonData = {
         "key": "github"
@@ -96,19 +105,32 @@ function get_Github(x) {
             return response.json();
         })
         .then(data => {
-            if(x=='2'){
-                for (const key in data.val) {
-                    if (data.val.hasOwnProperty(key)) {
-                        document.getElementById(key).value = data.val[key];
-                    }
-                }
-            }else if (x=='1') {
-                window.userName = data.val['userName']||'bgvioletsky'
-                window.repo = data.val['repo']||'XBS_warehouse'
-                window.branch = data.val['branch']
-                window.token = data.val['token']
-            } 
+            if (typeof data === 'object' && data !== null && Object.keys(data).length > 0&& data.val['userName']!=""&& data.val['repo']!="") {
+                // 执行相应逻辑
             
+                if(x=='2'){
+                    for (const key in data.val) {
+                        if (data.val.hasOwnProperty(key)) {
+                            document.getElementById(key).value = data.val[key];
+                        }
+                    }
+                }else if (x=='1') {
+                    window.userName = data.val['userName']
+                    window.repo = data.val['repo']
+                    window.branch = data.val['branch']
+                    window.token = data.val['token']
+                }
+            }else{
+                if( getPath(window.location.href)=='/html/config.html'){
+                    return
+                }else{
+                    alert('数据为空，请点击确定前往配置页面');
+                    window.location.href = '/html/config.html';
+                    window.peizi=1
+                }
+                
+              
+            }
         })
         .catch(error => {
             console.error('Error:', error);
@@ -247,7 +269,7 @@ function get_XBS_data(x) {
             let name=key;
             let url=data[key].sourceUrl
             let download_url=`https://cdn.jsdelivr.net/gh/bgvioletsky/XBS_warehouse@v0.0.1/xbs_source/${leibie}/${encodeURIComponent(key)}.xbs`
-               console.log(key,data[key])
+            //    console.log(key,data[key])
                htmlString = htmlString+`
             <li>
                 <div class="book-mid-info">
