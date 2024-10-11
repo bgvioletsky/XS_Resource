@@ -3,13 +3,14 @@ const bg = new Env('xs');
 bg.version = '0.0.16';
 bg.json = bg.name // `接口`类请求的响应体
 bg.html = bg.name // `页面`类请求的响应体
-// bg.url = "http://192.168.1.78:8080/index.html";
-bg.url = `https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@${bg.version}/index.html`
+bg.url = "http://192.168.1.78:8080/index.html";
+// bg.url = `https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@${bg.version}/index.html`
 bg.ver = 'https://raw.githubusercontent.com/bgvioletsky/XS_Resource/refs/heads/main/conf/release.json'
 bg.x = bg.name;
 !(
     async () => {
         // await getVersions()
+        // bg.setdata("version",bg.version)
         // 为请求URL设置路径
         bg.path = bg.getPath($request.url)
         // 判断请求方法是否为 GET
@@ -153,6 +154,7 @@ async function handleApi() {
         '/set_github': apiSave,
         '/get_github': apiGet,
         '/get_XBS_data':apiGetXBSData,
+        '/get_version': getVersion,
 
     }
 
@@ -302,14 +304,18 @@ function doneQuery() {
     })
 }
 
-function getVersions() {
-    return bg.http.get(bg.ver).then(
+async function getVersion() {
+     await bg.http.get(bg.ver).then(
         (resp) => {
             try {
                 let x = bg.toObj(resp.body)
+                let o =   bg.compareVersion(bg.version, x.version)
+                o = o === 1 ? true : false
+                let env= bg.getEnv()
                 bg.json = {
-                    nowversion: bg.version,
-                    newversion: x.version
+                    version: x.version,
+                    env: env,
+                    update:o
                 }
             } catch {
                 bg.json = {}
@@ -460,10 +466,10 @@ function Env(name, opts) {
             const v1 = version1.split('.').map(Number);
             const v2 = version2.split('.').map(Number);
             for (let i = 0; i < 3; i++) {
-                if (v1[i] > v2[i]) {
-                    return 1; // version1大于version2
-                } else if (v1[i] < v2[i]) {
-                    return -1; // version1小于version2
+                if (v1[i] < v2[i]) {
+                    return 1; // version1小于version2
+                } else if (v1[i] > v2[i]) {
+                    return -1; // version1大于version2
                 }
             }
             return 0;

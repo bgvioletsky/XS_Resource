@@ -295,3 +295,30 @@ function get_XBS_data(x) {
     });
 }
 
+
+function  get_version(){
+    fetch('/api/get_version')
+    .then(response => response.json())
+    .then(data => {
+        data=JSON.parse(data)
+        let update=data.update
+        let version=data.version
+        let env=data.env
+        if(update=='-1'){
+            alert('当前版本较低，请更新到最新版')
+            if(env=='Stash'){
+                window.location.href = `stash://install-override?url=https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@${version}/conf/xs.stash.stoverride`
+            }else if(env=='Shadowrocket'){
+                window.location.href = `shadowrocket://install?module=https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@${version}/conf/xs.surge.sgmodule`
+            }else if(env=='Loon'){
+                window.location.href = `loon://import?plugin=https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@${version}/conf/xs.plugin`
+            }else if(env=='Surge'){
+                window.location.href =  `surge:///install-module?url=https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@${version}/conf/xs.surge.sgmodule`
+            }else if(env=='Quantumult X'){
+                window.location.href = `quantumult-x:///add-resource?remote-resource=%7B%22rewrite_remote%22%3A%5B%22https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fbgvioletsky%2FXS_Resource%40${version}%2Fconf%2Fxs.conf%2Ctag%3Dxs%22%5D%7D`
+            }
+           
+        }
+       
+    })
+}
