@@ -11,15 +11,19 @@ http:
   force-http-engine:
     - "xs.com:80"
     - "xs.net:80"
+    - "xs.xyz:80"
     - "*.xs.com:80"
     - "*.xs.net:80"
+    - "*.xs.xyz:80"
   mitm:
     - "xs.com"
     - "xs.net"
+    - "xs.xyz"
     - "*.xs.com"
     - "*.xs.net"
+    - "*.xs.xyz"
   script:
-    - match: ^https?:\/\/(.+\.)?xs\.(com|net)
+    - match: ^https?:\/\/(.+\.)?xs\.(com|net|xyz)
       name: XS
       type: request
       require-body: true
