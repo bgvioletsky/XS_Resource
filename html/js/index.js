@@ -309,15 +309,15 @@ function  get_version(){
         if(update){
             alert('当前版本较低，请更新到最新版')
             if(env=='Stash'){
-                window.location.href = `stash://install-override?url=https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@${version}/conf/xs.stash.stoverride`
+                window.location.href = `stash://install-override?url=https://raw.githubusercontent.com/bgvioletsky/XS_Resource/refs/heads/main/conf/xs.stash.stoverride`
             }else if(env=='Shadowrocket'){
-                window.location.href = `shadowrocket://install?module=https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@${version}/conf/xs.surge.sgmodule`
+                window.location.href = `shadowrocket://install?module=https://raw.githubusercontent.com/bgvioletsky/XS_Resource/refs/heads/main/conf/xs.surge.sgmodule`
             }else if(env=='Loon'){
-                window.location.href = `loon://import?plugin=https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@${version}/conf/xs.plugin`
+                window.location.href = `loon://import?plugin=https://raw.githubusercontent.com/bgvioletsky/XS_Resource/refs/heads/main/conf/xs.plugin`
             }else if(env=='Surge'){
-                window.location.href =  `surge:///install-module?url=https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@${version}/conf/xs.surge.sgmodule`
+                window.location.href =  `surge:///install-module?url=https://raw.githubusercontent.com/bgvioletsky/XS_Resource/refs/heads/main/conf/xs.surge.sgmodule`
             }else if(env=='Quantumult X'){
-                window.location.href = `quantumult-x:///add-resource?remote-resource=%7B%22rewrite_remote%22%3A%5B%22https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fbgvioletsky%2FXS_Resource%40${version}%2Fconf%2Fxs.conf%2Ctag%3Dxs%22%5D%7D`
+                window.location.href = `quantumult-x:///add-resource?remote-resource={"rewrite_remote":["https://raw.githubusercontent.com/bgvioletsky/XS_Resource/refs/heads/main/conf/xs.conf,tag=xs"]}`
             }
            
         }
