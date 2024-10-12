@@ -195,6 +195,7 @@ input[type="password"] {
 
 .content1 {
   display: flex;
+  margin-top: 20px;
   padding: 10vh 0;
   justify-content: center; /* 水平居中 */
   align-items: center; /* 垂直居中 */
