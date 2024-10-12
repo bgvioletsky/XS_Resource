@@ -257,8 +257,8 @@ function get_XBS_data(x) {
             .then(data => {
                 // data=JSON.parse(data)
                 let htmlString = `
-                <li>
-                    <div class="book-info">
+                <li class="book-info">
+                    <div >
                         <div class="book-title">
                             <span class="book-name">源总数${Object.keys(data).length}</span>
                         </div>

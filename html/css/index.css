@@ -21,7 +21,7 @@ body {
   padding: 0;
   width: 100vw;
   height: 100vh;
-  background-image: url(https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.1.0/html/src/background.png);
+  background-image: url(https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.1.1/html/src/background.png);
   background-position: center top;
   background-repeat: repeat;
   background-attachment: fixed;
@@ -217,7 +217,11 @@ input[type="password"] {
   border-radius: 15px;
   overflow: hidden;
   height: 120px;
+  padding: 10px;
   gap: 5px;
+}
+.source-url{
+  overflow: hidden;
 }
 .book_info{
   grid-column-start: 1;
@@ -230,12 +234,12 @@ input[type="password"] {
   gap: 5px;
   height: 90px;
 }
-p>.btn {
+.btn {
   display: flex;
   flex-direction: row;
   align-content: center;
   justify-content: flex-end;
-  margin-right: 50px;
+  margin-right: 5px;
 }
 .btn>a{
   display: flex;
