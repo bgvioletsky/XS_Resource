@@ -216,7 +216,6 @@ input[type="password"] {
   margin: 15px;
   border-radius: 15px;
   overflow: hidden;
-  height: 120px;
   padding: 10px;
   gap: 5px;
 }
