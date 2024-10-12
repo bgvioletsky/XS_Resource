@@ -222,7 +222,7 @@ input[type="password"] {
 .source-url{
   overflow: hidden;
 }
-.book_info{
+li.book_info{
   grid-column-start: 1;
   grid-column-end: -1;
 }
