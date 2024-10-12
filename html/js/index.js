@@ -17,12 +17,12 @@ function handleUploadFormSubmit() {
     };
 
     fetch('/api/set_github', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(jsonData)
-        })
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(jsonData)
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -58,12 +58,12 @@ function handleViewButtonClick() {
     };
 
     fetch('/api/set_github', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(jsonData)
-        })
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(jsonData)
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -92,12 +92,12 @@ function get_Github(x) {
     };
 
     fetch('/api/get_github', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(jsonData)
-        })
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(jsonData)
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -105,31 +105,31 @@ function get_Github(x) {
             return response.json();
         })
         .then(data => {
-            if (typeof data === 'object' && data !== null && Object.keys(data).length > 0&& data.val['userName']!=""&& data.val['repo']!="") {
+            if (typeof data === 'object' && data !== null && Object.keys(data).length > 0 && data.val['userName'] != "" && data.val['repo'] != "") {
                 // 执行相应逻辑
-            
-                if(x=='2'){
+
+                if (x == '2') {
                     for (const key in data.val) {
                         if (data.val.hasOwnProperty(key)) {
                             document.getElementById(key).value = data.val[key];
                         }
                     }
-                }else if (x=='1') {
+                } else if (x == '1') {
                     window.userName = data.val['userName']
                     window.repo = data.val['repo']
                     window.branch = data.val['branch']
                     window.token = data.val['token']
                 }
-            }else{
-                if( getPath(window.location.href)=='/html/config.html'){
+            } else {
+                if (getPath(window.location.href) == '/html/config.html') {
                     return
-                }else{
+                } else {
                     alert('数据为空，请点击确定前往配置页面');
                     window.location.href = '/html/config.html';
-                    window.peizi=1
+                    window.peizi = 1
                 }
-                
-              
+
+
             }
         })
         .catch(error => {
@@ -140,23 +140,23 @@ function get_Github(x) {
 async function get_Data() {
     var url = document.getElementById('userName').value || 'https://xs.com';
     var headers = document.getElementById('branch').value
-    if (headers==''){
-        headers='{ "user-agent": " Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36"}'
+    if (headers == '') {
+        headers = '{ "user-agent": " Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36"}'
     }
-    headers=headers.replace(/'/g,'"')
-    headers=JSON.parse(headers)
+    headers = headers.replace(/'/g, '"')
+    headers = JSON.parse(headers)
     const jsonData = {
         "url": url,
         'method': method,
-        'headers':  headers,
+        'headers': headers,
     };
     fetch('/query/host', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(jsonData)
-        })
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(jsonData)
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -231,96 +231,175 @@ function compareVersion(version1, version2) {
 }
 
 function get_XBS_data(x) {
-    let leibie=''
-    if(/^video/.test(x)){
-        leibie='video'
-    }else if(/^text/.test(x)){
-        leibie='text'
-    }else if(/^audio/.test(x)){
-        leibie='audio'
+    if(x=='config'){
+        set_config()
     }else{
-        leibie='comic'
+        removeElement('.Seting') 
+        removeElementById('#bookList','#main')
+        let leibie = ''
+        if (/^video/.test(x)) {
+            leibie = 'video'
+        } else if (/^text/.test(x)) {
+            leibie = 'text'
+        } else if (/^audio/.test(x)) {
+            leibie = 'audio'
+        } else {
+            leibie = 'comic'
+        }
+        let url = `https://cdn.jsdelivr.net/gh/${userName}/${repo}@v0.0.1/xbs_source/${x}`
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // data=JSON.parse(data)
+                let htmlString = `<li>
+                    <div class="book-mid-info">
+                        <div class="book-title">
+                            <span class="book-name">源总数${Object.keys(data).length}</span>
+                        </div>
+                        
+                    </div>
+                </li>`
+                for (const key in data) {
+                    let name = key;
+                    let url = data[key].sourceUrl
+                    let download_url = `https://cdn.jsdelivr.net/gh/bgvioletsky/XBS_warehouse@v0.0.1/xbs_source/${leibie}/${encodeURIComponent(key)}.xbs`
+                    //    console.log(key,data[key])
+                    htmlString = htmlString + `
+                <li>
+                    <div class="book-mid-info">
+                        <div class="book-title">
+                            <span class="book-name">${name}</span>
+                        </div>
+                        <p><strong>源URL:</strong> <span class="source-url">${url}</span></p>
+                        <p class="btn">
+                            <a href="${download_url}">下载</a>
+                        </p>
+                    </div>
+                </li>
+            `;
+                }
+                const bookList = document.getElementById('bookList');
+                
+                // 插入HTML字符串
+                htmlString = `<ul class="book-list">${htmlString}</ul>`
+                bookList.innerHTML = '';
+                bookList.insertAdjacentHTML('beforeend', htmlString);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
-    let url=`https://cdn.jsdelivr.net/gh/${userName}/${repo}@v0.0.1/xbs_source/${x}`
    
-
-    // const jsonData = {
-    //     "url": url,
-    // };
-    // 
-    fetch(url)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        // data=JSON.parse(data)
-        let htmlString=`<li>
-                <div class="book-mid-info">
-                    <div class="book-title">
-                        <span class="book-name">源总数${Object.keys(data).length}</span>
-                    </div>
-                    
-                </div>
-            </li>`
-        for (const key in data) {
-            let name=key;
-            let url=data[key].sourceUrl
-            let download_url=`https://cdn.jsdelivr.net/gh/bgvioletsky/XBS_warehouse@v0.0.1/xbs_source/${leibie}/${encodeURIComponent(key)}.xbs`
-            //    console.log(key,data[key])
-               htmlString = htmlString+`
-            <li>
-                <div class="book-mid-info">
-                    <div class="book-title">
-                        <span class="book-name">${name}</span>
-                    </div>
-                    <p><strong>源URL:</strong> <span class="source-url">${url}</span></p>
-                    <p class="btn">
-                        <a href="${download_url}">下载</a>
-                    </p>
-                </div>
-            </li>
-        `;   
-        }
-        const bookList = document.getElementById('bookList');
-        // 插入HTML字符串
-        htmlString=`<ul class="book-list">${htmlString}</ul>`
-        bookList.innerHTML = '';
-        bookList.insertAdjacentHTML('beforeend', htmlString);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
 }
 
 
-function  get_version(){
-    fetch('/api/get_version',{
+function get_version() {
+    fetch('/api/get_version', {
         method: 'POST',
     })
-    .then(response => response.json())
-    .then(data => {
-        // data=JSON.parse(data)
-        let update=data.update
-        let version=data.version
-        let env=data.env
-        if(update){
-            alert('当前版本较低，请更新到最新版')
-            if(env=='Stash'){
-                window.location.href = `stash://install-override?url=https://raw.githubusercontent.com/bgvioletsky/XS_Resource/refs/heads/main/conf/xs.stash.stoverride`
-            }else if(env=='Shadowrocket'){
-                window.location.href = `shadowrocket://install?module=https://raw.githubusercontent.com/bgvioletsky/XS_Resource/refs/heads/main/conf/xs.surge.sgmodule`
-            }else if(env=='Loon'){
-                window.location.href = `loon://import?plugin=https://raw.githubusercontent.com/bgvioletsky/XS_Resource/refs/heads/main/conf/xs.plugin`
-            }else if(env=='Surge'){
-                window.location.href =  `surge:///install-module?url=https://raw.githubusercontent.com/bgvioletsky/XS_Resource/refs/heads/main/conf/xs.surge.sgmodule`
-            }else if(env=='Quantumult X'){
-                window.location.href = `quantumult-x:///add-resource?remote-resource={"rewrite_remote":["https://raw.githubusercontent.com/bgvioletsky/XS_Resource/refs/heads/main/conf/xs.conf,tag=xs"]}`
+        .then(response => response.json())
+        .then(data => {
+            // data=JSON.parse(data)
+            let update = data.update
+            let version = data.version
+            let env = data.env
+            if (update) {
+                alert('当前版本较低，请更新到最新版')
+                if (env == 'Stash') {
+                    window.location.href = `stash://install-override?url=https://raw.githubusercontent.com/bgvioletsky/XS_Resource/refs/heads/main/conf/xs.stash.stoverride`
+                } else if (env == 'Shadowrocket') {
+                    window.location.href = `shadowrocket://install?module=https://raw.githubusercontent.com/bgvioletsky/XS_Resource/refs/heads/main/conf/xs.surge.sgmodule`
+                } else if (env == 'Loon') {
+                    window.location.href = `loon://import?plugin=https://raw.githubusercontent.com/bgvioletsky/XS_Resource/refs/heads/main/conf/xs.plugin`
+                } else if (env == 'Surge') {
+                    window.location.href = `surge:///install-module?url=https://raw.githubusercontent.com/bgvioletsky/XS_Resource/refs/heads/main/conf/xs.surge.sgmodule`
+                } else if (env == 'Quantumult X') {
+                    window.location.href = `quantumult-x:///add-resource?remote-resource={"rewrite_remote":["https://raw.githubusercontent.com/bgvioletsky/XS_Resource/refs/heads/main/conf/xs.conf,tag=xs"]}`
+                }
+
             }
+
+        })
+}
+
+function removeElement(selector) {
+    var elementToRemove = document.querySelector(selector);
+
+    if (elementToRemove) {
+        elementToRemove.remove();
+    }
+}
+function removeElementById(parent,element) {
+    var parent = document.querySelector(parent);
+    var elementToRemove = document.querySelector(element);
+
+    if (parent && elementToRemove) {
+        parent.removeChild(elementToRemove);
+    }
+}
+function set_config() {
+    removeElementById('#bookList','#main')
+    let headerHtml = `
+        <div id="Seting" class="Seting">
+        <div id="box_container" class="box_container"">
+            <div>
+                <h1>github 配置</h1>
+            </div>
+            <form id=" uploadForm" action="/api/set_github" method="post">
+            <div class="item">
+                <label><b>用户名</b></label>
+                <input type="text" id="userName" name="userName" placeholder="用户名" required autocomplete="of">
+            </div>
+            <div class="item">
+                <label><b>仓库名</b></label>
+                <input type="text" id="repo" name="repo"  placeholder="仓库名" required autocomplete="of">
+            </div>
+            <div class="item">
+                <label><b>分支</b></label>
+                <input type="text" id="branch" name="branch" placeholder="分支" required autocomplete="of">
+            </div>
+            <div class="item">
+                <label><b>token</b></label>
+                <input type="password" id="token" name="token" placeholder="token" required autocomplete="of">
+            </div>
+            <div class="button">
+                <button type="button" id="saveButton" class="bg_mv" onclick="handleUploadFormSubmit()">保存</button>
+                <button type="button" id="viewButton" class="bg_mv" onclick="handleViewButtonClick()">清空</button>
+            </div>
+            <div >如不知如何配置请访问我的<a href="https://github.com/bgvioletsky/XS_Resource" style="background-color: antiquewhite;border-radius: 23px;border: 1px ;padding: 0 12px;">仓库</a></div>
+            </div>
+            </form>
+        </div>
+
+    </div>
+    `;
+    const bodyElement = document.querySelector('body');
+    if (!document.getElementById("Seting")) {
+        bodyElement.insertAdjacentHTML('beforeend', headerHtml);
+    }
+    get_Github('2')
+}
+
+function handleheaderClick() {
+    let btns = document.querySelectorAll('.nav-item');
+
+    btns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            btns.forEach(otherBtn => {
+                    if (otherBtn !== btn) {
+                        otherBtn.style.backgroundColor = ''; // 恢复原始背景颜色
+                    }
+                });
            
-        }
-       
-    })
+                btn.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+               
+            
+        });
+    });
+   
 }

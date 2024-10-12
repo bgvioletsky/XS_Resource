@@ -1,7 +1,7 @@
 <!--
  * @Author: bgcode
  * @Date: 2024-10-07 23:30:57
- * @LastEditTime: 2024-10-12 02:27:19
+ * @LastEditTime: 2024-10-12 19:56:19
  * @LastEditors: bgcode
  * @Description: 描述
  * @FilePath: /XS_Resource/index.html
@@ -14,10 +14,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>香色源仓库</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.1.0/html/css/index.css">
-    <script src="https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.1.0/html/js/index.js"></script>
-    <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.1.0/html/src/render_radius.png" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.1.0/html/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.1.1/html/css/index.css">
+    <script src="https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.1.1/html/js/index.js"></script>
+    <link rel="shortcut icon"
+        href="https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.1.1/html/src/render_radius.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bgvioletsky/XS_Resource@0.1.1/html/css/style.css">
 </head>
 
 <body>
@@ -30,34 +31,34 @@
             </div>
             <div class="nav-toggle">
                 <ul class="nav-menu">
-                    <li class="nav-item">
-                        <a href="/" class="nav-link">
-                             首页
+                    <li>
+                        <a href="/" class="nav-item" style="background-color: rgba(0, 0, 0, 0.5);">
+                            首页
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a  class="nav-link" onclick="get_XBS_data('video/videoList.json')">
-                             视频源
+                    <li>
+                        <a class="nav-item" onclick="get_XBS_data('video/videoList.json')">
+                            视频源
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a onclick="get_XBS_data('audio/audioList.json')" class="nav-link">
-                           听书源
+                    <li>
+                        <a onclick="get_XBS_data('audio/audioList.json')" class="nav-item">
+                            听书源
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a onclick="get_XBS_data('comic/comicList.json')"  class="nav-link">
-                          漫画源
+                    <li>
+                        <a onclick="get_XBS_data('comic/comicList.json')" class="nav-item">
+                            漫画源
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li>
 
-                        <a onclick="get_XBS_data('text/textList.json')" class="nav-link">
-                         书源
+                        <a  onclick="get_XBS_data('text/textList.json')" class="nav-item">
+                            书源
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="/html/config.html">配置</a>
+                    <li>
+                        <a  onclick="get_XBS_data('config')" class="nav-item">配置</a>
                     </li>
                 </ul>
             </div>
@@ -70,10 +71,11 @@
     </div>
 </body>
 <script>
-
+ 
     window.onload = async function () {
         get_Github('1');
         get_version();
+        handleheaderClick()
     };
 
 </script>
