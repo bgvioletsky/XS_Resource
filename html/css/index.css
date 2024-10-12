@@ -47,8 +47,6 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.8);
   position: fixed;
   z-index: 2;
-  min-height: 60px;
-  max-height: 75px;
 }
 
 .nav {
@@ -176,7 +174,7 @@ input[type="password"] {
 
 @media screen and (max-width: 810px)  {
     .header{
-        height: 125px;
+        height: 80px;
     }
     .nav {
         height: 5vh;
@@ -198,8 +196,6 @@ input[type="password"] {
 .content1 {
   display: flex;
   padding: 10vh 0;
-  /* border: 1px solid #84e5ec4c; */
-  display: flex;
   justify-content: center; /* 水平居中 */
   align-items: center; /* 垂直居中 */
 }
@@ -207,7 +203,7 @@ input[type="password"] {
   width: 80%;
   height: calc(100% - 20vh);
   margin: 5vh auto;
-
+  gap: 5px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   border: 1px solid aliceblue;
@@ -218,11 +214,45 @@ input[type="password"] {
   background-color: #3be188;
   margin: 15px;
   border-radius: 15px;
+  overflow: hidden;
+  height: 120px;
+  gap: 5px;
+}
+.book_info{
+  grid-column-start: 1;
+  grid-column-end: -1;
 }
 .book-mid-info {
   display: flex;
   flex-direction: column;
-  margin: 5px 0 5px 15px;
+  flex-wrap: wrap;
+  gap: 5px;
+  height: 90px;
+}
+p>.btn {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: flex-end;
+  margin-right: 50px;
+}
+.btn>a{
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  min-width: 60px;
+  height: 30px;
+  cursor: pointer;
+  border-radius: 25px;
+  box-shadow: 0 1px 5px #0003, 0 2px 2px #00000024, 0 3px 1px -2px #0000001f;
+}
+.btn>a:hover {
+  box-shadow: 0 0 0 rgba(233, 251, 96, 0.061), 0 0 0 rgba(255, 255, 255, 0.8),
+    inset 8px 8px 18px rgba(0, 0, 0, 0.1),
+    inset -8px -8px 18px rgba(0, 0, 0, 0.1);
+  border-radius: 25px;
 }
 @media screen and (max-width: 900px) {
   .book-list {
