@@ -232,7 +232,6 @@ input[type="password"] {
   flex-direction: column;
   flex-wrap: wrap;
   gap: 5px;
-  height: 90px;
 }
 .btn {
   display: flex;
@@ -240,6 +239,7 @@ input[type="password"] {
   align-content: center;
   justify-content: flex-end;
   margin-right: 5px;
+  margin-top:3px ;
 }
 .btn>a{
   display: flex;
