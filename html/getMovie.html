@@ -1,0 +1,65 @@
+<!--
+ * @Author: bgcode
+ * @Date: 2024-10-28 18:19:18
+ * @LastEditTime: 2024-10-28 21:06:07
+ * @LastEditors: bgcode
+ * @Description: 描述
+ * @FilePath: /XS_Resource/html/getMovie.html
+ * 本项目采用GPL 许可证，欢迎任何人使用、修改和分发。
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>下载文件示例</title>
+    <script src="js/getmovie.js"></script>
+    <style>
+        .container {
+            max-width: 120px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        .vod-image {
+            width: 100%;
+            border-radius: 5px;
+        }
+        .vod-details {
+            margin-top: 20px;
+        }
+        .vod-detail {
+            margin: 10px 0;
+        }
+        #results{
+            display: flex;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="downloadBtn">下载文件</button>
+    <div>
+        <input type="text" id="searchInput" value="无神世界" placeholder="输入搜索内容...">
+        <input type="text" id="searchpage" value="1" placeholder="输入页码...">
+        <button onclick="get_Data()">搜索</button>
+    </div>
+
+    <div id="results"></div>
+
+    <script>
+        document.getElementById('downloadBtn').addEventListener('click', function () {
+            // 创建文件内容
+            const fileContent = 'Hello, this is a text file!';
+           
+        });
+       </script>
+</body>
+
+</html>
