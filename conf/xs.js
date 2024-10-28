@@ -1,6 +1,6 @@
 const bg = new Env('xs');
 
-bg.version = '0.1.5';
+bg.version = '0.1.6';
 bg.json = bg.name // `接口`类请求的响应体
 bg.html = bg.name // `页面`类请求的响应体
 // bg.url = "http://192.168.1.78:8080/index.html";
@@ -116,19 +116,10 @@ async function handleTool() {
 async function queryHost() {
     const data = bg.toObj($request.body)
     var url = data.url
-    if (bg.x === 'xs') {
-        if (!/^https?:\/\//i.test(url)) {
-            // 如果没有，则默认添加 https://
-            url = 'https://' + url;
-        }
-    }
-    if (bg.x = 'error') {
-        url = url.replace('https://', 'http://')
-    }
+   
 
     var method = data.method || 'GET'
     var headers = data.headers || {
-        'Host': bg.getHost(url),
         'user-agent': ' Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36'
     };
     const myRequest = {
