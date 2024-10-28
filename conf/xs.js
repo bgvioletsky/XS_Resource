@@ -113,29 +113,21 @@ async function handleTool() {
         )
     }
 }
+
 async function queryHost() {
     const data = bg.toObj($request.body)
     var url = data.url
-   
-
     var method = data.method || 'GET'
-    var headers = data.headers || {
-        'user-agent': ' Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36'
-    };
     const myRequest = {
         url: url,
         method: method, // Optional, default GET.
-        headers: headers,
+        headers: {"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"},
     };
     await bg.http.get(myRequest).then(
         (resp) => {
-            // bg.log(JSON.stringify(resp.body))
             bg.json = {
                 val: resp.body
             }
-        }, reason => {
-            bg.x = 'error'
-            queryHost()
         }
     )
 }
