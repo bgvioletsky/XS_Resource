@@ -1,7 +1,7 @@
 /*
  * @Author: bgcode
  * @Date: 2024-10-28 19:15:08
- * @LastEditTime: 2024-10-28 21:08:50
+ * @LastEditTime: 2024-10-28 21:50:32
  * @LastEditors: bgcode
  * @Description: 描述
  * @FilePath: /XS_Resource/html/js/getmovie.js
@@ -29,7 +29,7 @@ async function get_Data() {
             return response.json();
         })
         .then(data => {
-            data=JSON.parse(data.val)['data']
+            data=JSON.parse(data.val).data
             let htmlString = ''
             for (const key in data) {
                 htmlString+=` <div class="container">
