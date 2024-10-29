@@ -1,7 +1,7 @@
 /*
  * @Author: bgcode
  * @Date: 2024-10-28 19:15:08
- * @LastEditTime: 2024-10-28 21:50:32
+ * @LastEditTime: 2024-10-29 12:02:05
  * @LastEditors: bgcode
  * @Description: 描述
  * @FilePath: /XS_Resource/html/js/getmovie.js
@@ -83,9 +83,10 @@ async function get_movie(id) {
     }).then(data => {
         data=JSON.parse(data.val).data.vod_info
         let vedios=data.vod_url_with_player
+        let fileContent="#EXTM3U"
         for (const key in vedios) {
            url= vedios[key].url.split('#')
-           let fileContent="#EXTM3U"
+           
         for (const key in url) {
             let   kk=url[key].split('\$')
             fileContent+=`\n#EXTINF:-1 tvg-name="${data.vod_name}" tvg-logo="${data.vod_pic}" group-title="动漫",${kk[0]}\n${kk[1]}`
