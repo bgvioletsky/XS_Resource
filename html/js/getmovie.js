@@ -1,7 +1,7 @@
 /*
  * @Author: bgcode
  * @Date: 2024-10-28 19:15:08
- * @LastEditTime: 2024-10-29 12:02:05
+ * @LastEditTime: 2024-10-29 12:14:20
  * @LastEditors: bgcode
  * @Description: 描述
  * @FilePath: /XS_Resource/html/js/getmovie.js
@@ -34,17 +34,7 @@ async function get_Data() {
             for (const key in data) {
                 htmlString+=` <div class="container">
             <h1>${data[key]['vod_name']}</h1>
-            <img class="vod-image" src="${data[key]['vod_pic']}" alt="无神世界的神明活动">
-            <div class="vod-details">
-                <div class="vod-detail"><a onclick="get_movie(${data[key]['vod_id']})"><strong>下载</strong></a></div>
-                <div class="vod-detail"><strong>评分:</strong> ${data[key]['vod_score']}</div>
-                <div class="vod-detail"><strong>地区:</strong> ${data[key]['vod_area']}</div>
-                <div class="vod-detail"><strong>年份:</strong> ${data[key]['vod_year']}</div>
-                <div class="vod-detail"><strong>演员:</strong> ${data[key]['vod_actor']}</div>
-                <div class="vod-detail"><strong>导演:</strong> ${data[key]['vod_director']}</div>
-                <div class="vod-detail"><strong>类型:</strong> ${data[key]['vod_class']}</div>
-                <div class="vod-detail"><strong>添加时间:</strong> ${data[key]['vod_remarks']}</div>
-            </div>
+            <a onclick="get_movie(${data[key]['vod_id']})"><img class="vod-image" src="${data[key]['vod_pic']}" alt="${data[key]['vod_name']}"></a>
         </div>`
                 
         
